@@ -1,0 +1,13 @@
+<ivy-module version="1.0">
+	<info organisation="org.aivan" module="librarian" />
+	<dependencies>
+		<dependency org="org.springframework" name="spring-core" rev="3.0.5.RELEASE" />
+<!-- 		<dependency org="org.springframework" name="spring-web" rev="3.0.5.RELEASE" />
+		<dependency org="org.springframework" name="spring-context" rev="3.0.5.RELEASE" />
+ -->		
+<!-- 
+		<dependency org="org.springframework" name="spring-beans" rev="3.1.0RELEASE" />
+ -->		
+ 		<dependency org="log4j" name="log4j" rev="1.2.16" />
+	</dependencies>
+</ivy-module>
