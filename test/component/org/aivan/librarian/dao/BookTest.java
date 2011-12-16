@@ -1,12 +1,14 @@
-package org.ivan.sptest.db;
+package org.aivan.librarian.dao;
 
+import static org.junit.Assert.*;
+
+import org.aivan.librarian.dao.entity.Book;
 import org.hibernate.ObjectNotFoundException;
-import org.ivan.sptest.db.entity.Book;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit38.AbstractTransactionalJUnit38SpringContextTests;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/root-context.xml" })
 @TransactionConfiguration(defaultRollback=true)
 @Transactional
-public class BookTest extends AbstractTransactionalJUnit38SpringContextTests {
+public class BookTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private static final int NON_EXISTING_BOOK_ID = -1;
 	

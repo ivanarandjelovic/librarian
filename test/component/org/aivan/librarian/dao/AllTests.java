@@ -1,4 +1,4 @@
-package org.ivan.sptest.db;
+package org.aivan.librarian.dao;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

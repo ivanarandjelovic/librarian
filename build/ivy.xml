@@ -7,16 +7,23 @@
 	<dependencies>
 		<dependency org="log4j" name="log4j" rev="1.2.16" />
 		<dependency org="org.springframework" name="spring-core"
-			rev="3.1.0.RELEASE" conf="master -> runtime"/>
+			rev="3.1.0.RELEASE" />
+		<dependency org="org.springframework" name="spring-context"
+			rev="3.1.0.RELEASE" />
 		<dependency org="org.springframework" name="spring-beans"
-			rev="3.1.0.RELEASE" conf="master -> runtime"/>
+			rev="3.1.0.RELEASE" />
 		<dependency org="org.springframework" name="spring-webmvc"
-			rev="3.1.0.RELEASE" conf="master -> runtime" />
+			rev="3.1.0.RELEASE" />
+		<dependency org="org.springframework" name="spring-web"
+			rev="3.1.0.RELEASE" />
+		<dependency org="org.springframework" name="spring-test"
+			rev="3.1.0.RELEASE" />
 		<dependency org="org.springframework" name="spring-hibernate3"
-			rev="2.0.8" conf="master -> runtime" />
+			rev="2.0.8" />
 		<dependency org="org.springframework" name="spring-dao"
-			rev="2.0.8" conf="master -> runtime"/>
-		<dependency org="hibernate" name="hibernate" rev="3.0.5"  conf="master -> runtime" />
-		<dependency org="junit" name="junit" rev="4.10"  conf="test -> runtime" />
+			rev="2.0.8" />
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.6.9.Final"/>
+		<dependency org="javax.persistence" name="persistence-api" rev="1.0.2" />
+		<dependency org="junit" name="junit" rev="4.10" />
 	</dependencies>
 </ivy-module>
