@@ -1,11 +1,22 @@
 <ivy-module version="1.0">
 	<info organisation="org.aivan" module="librarian" />
+	<configurations defaultconf="master">
+		<conf name="master" />
+		<conf name="test" extends="master" />
+	</configurations>
 	<dependencies>
- 		<dependency org="log4j" name="log4j" rev="1.2.16" />
- 		<dependency org="org.springframework" name="spring-core" rev="3.1.0.RELEASE" />
-		<dependency org="org.springframework" name="spring-beans" rev="3.1.0.RELEASE" />
-		<dependency org="org.springframework" name="spring-webmvc" rev="3.1.0.RELEASE" />
-		<dependency org="org.springframework" name="spring-hibernate3" rev="2.0.8" />
-		<dependency org="junit" name="junit" rev="4.10" />
+		<dependency org="log4j" name="log4j" rev="1.2.16" />
+		<dependency org="org.springframework" name="spring-core"
+			rev="3.1.0.RELEASE" conf="master -> runtime"/>
+		<dependency org="org.springframework" name="spring-beans"
+			rev="3.1.0.RELEASE" conf="master -> runtime"/>
+		<dependency org="org.springframework" name="spring-webmvc"
+			rev="3.1.0.RELEASE" conf="master -> runtime" />
+		<dependency org="org.springframework" name="spring-hibernate3"
+			rev="2.0.8" conf="master -> runtime" />
+		<dependency org="org.springframework" name="spring-dao"
+			rev="2.0.8" conf="master -> runtime"/>
+		<dependency org="hibernate" name="hibernate" rev="3.0.5"  conf="master -> runtime" />
+		<dependency org="junit" name="junit" rev="4.10"  conf="test -> runtime" />
 	</dependencies>
 </ivy-module>
