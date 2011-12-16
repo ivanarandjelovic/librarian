@@ -1,47 +1,62 @@
-<project name="librarian" default="dist" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant" >
-    <description>
+<project name="librarian" default="dist" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>
         Main build file for librarian
     </description>
-  <!-- set global properties for this build -->
-  <property name="src" location="src"/>
-  <property name="build" location="build"/>
-  <property name="bin" location="bin"/>
-  <property name="dist"  location="dist"/>
+	<!-- set global properties for this build -->
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="build" />
+	<property name="bin.dir" location="bin" />
+	<property name="dist.dir" location="dist" />
+    <property name="lib.dir" value="lib" />
 
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-  </target>
+    <!-- paths used for compilation and run  -->
+    <path id="lib.path.id">
+        <fileset dir="${lib.dir}" />
+	</path>
+    <path id="run.path.id">
+        <path refid="lib.path.id" />
+        <path location="${bin.dir}" />
+    </path>
 
-  <target name="compile" depends="init"
-        description="compile the source " >
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${bin}"/>
-    <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${bin}"/>
-  </target>
-
-  <target name="dist" depends="compile"
-        description="generate the distribution" >
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
-
-    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${bin}"/>
-  </target>
-
-  <target name="clean"
-        description="clean up" >
-    <!-- Delete the ${bin} and ${dist} directory trees -->
-    <delete dir="${bin}"/>
-    <delete dir="${dist}"/>
-  </target>
-	
 	<!-- ================================= 
          target: resolve              
          ================================= -->
 	<target name="resolve" description="--> retrieve dependencies with ivy">
-		 <ivy:configure />
-		<ivy:retrieve file="${build}/ivy.xml" />
+		<ivy:configure />
+		<ivy:retrieve file="${build.dir}/ivy.xml" />
 	</target>
+
+    <!-- ================================= 
+          target: report              
+         ================================= -->
+    <target name="report" depends="resolve" description="--> generates a report of dependencies">
+        <ivy:report todir="${bin.dir}"/>
+    </target>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+	</target>
+
+	<target name="compile" depends="init,resolve" description="compile the source ">
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${bin.dir}" />
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" />
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist.dir}/lib" />
+
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${bin.dir}" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${bin} and ${dist} directory trees -->
+		<delete dir="${bin.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
 </project>
