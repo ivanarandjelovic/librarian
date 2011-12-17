@@ -4,6 +4,7 @@
     </description>
 	<!-- set global properties for this build -->
 	<property name="src.dir" location="src" />
+	<property name="src.test.dir" location="test" />
 	<property name="build.dir" location="build" />
 	<property name="bin.dir" location="bin" />
 	<property name="dist.dir" location="dist" />
@@ -18,34 +19,28 @@
         <path location="${bin.dir}" />
     </path>
 
-	<!-- ================================= 
-         target: resolve              
-         ================================= -->
-	<target name="resolve" description="--> retrieve dependencies with ivy">
-		<ivy:configure />
-		<ivy:retrieve file="${build.dir}/ivy.xml" />
-	</target>
-
-    <!-- ================================= 
-          target: report              
-         ================================= -->
-    <target name="report" depends="resolve" description="--> generates a report of dependencies">
-        <ivy:report todir="${bin.dir}"/>
-    </target>
-
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp />
 	</target>
 
-	<target name="compile" depends="init,resolve" description="compile the source ">
+	<target name="compile" depends="init" description="compile the source ">
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" />
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id"/>
 	</target>
 
-	<target name="dist" depends="compile" description="generate the distribution">
+	<target name="compile-tests" depends="init" description="compile the tests ">
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${bin.dir}" />
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src.test.dir}" destdir="${bin.dir}" classpathref="lib.path.id"/>
+	</target>
+	
+	<target name="compile-all" depends="compile, compile-tests" description="Compile all the sources" />
+
+	<target name="dist" depends="compile-all" description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist.dir}/lib" />
 
