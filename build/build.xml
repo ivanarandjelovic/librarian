@@ -5,19 +5,25 @@
 	<!-- set global properties for this build -->
 	<property name="src.dir" location="src" />
 	<property name="src.test.dir" location="test" />
+	<property name="src.test.unit.dir" location="${src.test.dir}/unit" />
+	<property name="src.test.component.dir" location="${src.test.dir}/component" />
 	<property name="build.dir" location="build" />
 	<property name="bin.dir" location="bin" />
 	<property name="dist.dir" location="dist" />
-    <property name="lib.dir" value="lib" />
+	<property name="lib.dir" value="lib" />
+	<property name="logs.dir" value="log" />
+	<property name="logs.junit.dir" value="${logs.dir}/junit" />
+	<property name="resources.dir" value="resources" />
 
-    <!-- paths used for compilation and run  -->
-    <path id="lib.path.id">
-        <fileset dir="${lib.dir}" />
+	<!-- paths used for compilation and run  -->
+	<path id="lib.path.id">
+		<fileset dir="${lib.dir}" />
 	</path>
-    <path id="run.path.id">
-        <path refid="lib.path.id" />
-        <path location="${bin.dir}" />
-    </path>
+	<path id="run.path.id">
+		<path refid="lib.path.id" />
+		<path location="${bin.dir}" />
+		<path location="${resources.dir}" />
+	</path>
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -28,19 +34,19 @@
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id"/>
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id" />
 	</target>
 
 	<target name="compile-tests" depends="init" description="compile the tests ">
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.test.dir}" destdir="${bin.dir}" classpathref="lib.path.id"/>
+		<javac srcdir="${src.test.dir}" destdir="${bin.dir}" classpathref="lib.path.id" />
 	</target>
-	
+
 	<target name="compile-all" depends="compile, compile-tests" description="Compile all the sources" />
 
-	<target name="dist" depends="compile-all" description="generate the distribution">
+	<target name="dist" depends="run-tests" description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist.dir}/lib" />
 
@@ -52,6 +58,25 @@
 		<!-- Delete the ${bin} and ${dist} directory trees -->
 		<delete dir="${bin.dir}" />
 		<delete dir="${dist.dir}" />
+		<delete dir="${logs.dir}" />
 	</target>
 
+	<target name="run-tests" depends="compile-all" description="run all tests">
+		<mkdir dir="${logs.junit.dir}" />
+		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
+			<classpath refid="run.path.id"/>
+			<batchtest fork="yes" todir="${logs.junit.dir}" unless="testcase">
+				<fileset dir="${src.test.unit.dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+				<fileset dir="${src.test.component.dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+			<formatter type="plain" usefile="true" />
+			<formatter type="xml" usefile="true" />
+		</junit>
+		<fail if="tests.failed" message="Test(s) failed." />
+	</target>
+	
 </project>
