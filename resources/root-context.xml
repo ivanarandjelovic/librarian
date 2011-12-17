@@ -20,7 +20,7 @@
 			</list> </property> -->
 		<property name="annotatedClasses">
 			<list>
-				<value>org.ivan.sptest.db.entity.Book</value>
+				<value>org.aivan.librarian.dao.entity.Book</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -35,7 +35,7 @@
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>
 
-	<bean id="bookDao" class="org.ivan.sptest.db.BookDaoImpl" autowire="default">
+	<bean id="bookDao" class="org.aivan.librarian.dao.BookDaoImpl" autowire="default">
 		<property name="sessionFactory" ref="mySessionFactory"/>
 	</bean>
 </beans>
