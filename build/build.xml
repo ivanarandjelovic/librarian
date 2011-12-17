@@ -13,6 +13,7 @@
 	<property name="lib.dir" value="lib" />
 	<property name="logs.dir" value="log" />
 	<property name="logs.junit.dir" value="${logs.dir}/junit" />
+	<property name="logs.report.dir" value="${logs.dir}/test-report" />
 	<property name="resources.dir" value="resources" />
 
 	<!-- paths used for compilation and run  -->
@@ -62,9 +63,10 @@
 	</target>
 
 	<target name="run-tests" depends="compile-all" description="run all tests">
+		<delete dir="${logs.junit.dir}" />
 		<mkdir dir="${logs.junit.dir}" />
 		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
-			<classpath refid="run.path.id"/>
+			<classpath refid="run.path.id" />
 			<batchtest fork="yes" todir="${logs.junit.dir}" unless="testcase">
 				<fileset dir="${src.test.unit.dir}">
 					<include name="**/*Test.java" />
@@ -78,5 +80,17 @@
 		</junit>
 		<fail if="tests.failed" message="Test(s) failed." />
 	</target>
-	
+
+	<target name="run-test-reports" depends="run-tests" description="prepare test repots">
+		<delete dir="${logs.report.dir}" />
+		<mkdir dir="${logs.report.dir}" />
+		<junitreport todir="${logs.report.dir}">
+			<fileset dir="${logs.junit.dir}">
+				<include name="TEST-*.xml" />
+				<include name="TEST-*.txt" />
+			</fileset>
+			<report format="frames" todir="${logs.report.dir}" />
+		</junitreport>
+	</target>
+
 </project>
