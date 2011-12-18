@@ -10,14 +10,16 @@
 	<property name="build.dir" location="build" />
 	<property name="bin.dir" location="bin" />
 	<property name="dist.dir" location="dist" />
-	<property name="dist.war.dir" value="${dist.dir}/war" />
-	<property name="lib.dir" value="lib" />
-	<property name="logs.dir" value="log" />
-	<property name="logs.junit.dir" value="${logs.dir}/junit" />
-	<property name="logs.report.dir" value="${logs.dir}/test-report" />
-	<property name="resources.dir" value="resources" />
-	<property name="webinf.dir" value="${resources.dir}/WEB-INF" />
+	<property name="dist.war.dir" location="${dist.dir}/war" />
+	<property name="lib.dir" location="lib" />
+	<property name="logs.dir" location="log" />
+	<property name="logs.junit.dir" location="${logs.dir}/junit" />
+	<property name="logs.report.dir" location="${logs.dir}/test-report" />
+	<property name="resources.dir" location="resources" />
+	<property name="webinf.dir" location="${resources.dir}/WEB-INF" />
 
+	<import file="./db_build.xml"/>
+	
 	<!-- paths used for compilation and run  -->
 	<path id="lib.path.id">
 		<fileset dir="${lib.dir}" />
@@ -117,5 +119,8 @@
 				<exclude name="web.xml" />
 			</webinf>
 		</war>
+	</target>
+	
+	<target name="re-build-db" depends="create_db_objects" description="drop and create new dev database">
 	</target>
 </project>
