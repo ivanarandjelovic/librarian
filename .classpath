@@ -40,5 +40,33 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.18-bin.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/javassist-3.12.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/com.sun.el_2.2.0.v201105051105.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/javax.el_2.2.0.v201105051105.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/javax.servlet.jsp_2.2.0.v201103241009.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/javax.servlet.jsp.jstl_1.2.0.v201004190952.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-ajp-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-annotations-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-client-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-continuation-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-deploy-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-http-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-io-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-jmx-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-jndi-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-overlay-deployer-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-plus-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-policy-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-rewrite-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-security-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-server-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-servlet-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-servlets-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-util-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-webapp-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-websocket-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-xml-8.0.1.v20110908.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/org.apache.jasper.glassfish_2.2.2.v201108011116.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/org.apache.taglibs.standard.glassfish_1.2.0.v201004190952.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

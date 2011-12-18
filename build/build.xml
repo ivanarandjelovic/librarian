@@ -16,7 +16,6 @@
 	<property name="logs.junit.dir" value="${logs.dir}/junit" />
 	<property name="logs.report.dir" value="${logs.dir}/test-report" />
 	<property name="resources.dir" value="resources" />
-	<property name="jsp.dir" value="${resources.dir}/jsp" />
 	<property name="webinf.dir" value="${resources.dir}/WEB-INF" />
 
 	<!-- paths used for compilation and run  -->
@@ -116,7 +115,6 @@
 		<mkdir dir="${dist.war.dir}" />
 
 		<war destfile="${dist.war.dir}/librarian.war" webxml="${webinf.dir}/web.xml">
-			<fileset dir="${jsp.dir}" />
 			<lib dir="${lib.dir}" />
 			<classes dir="${bin.dir}" />
 			<webinf dir="${webinf.dir}">
