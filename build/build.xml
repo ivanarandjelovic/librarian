@@ -10,11 +10,14 @@
 	<property name="build.dir" location="build" />
 	<property name="bin.dir" location="bin" />
 	<property name="dist.dir" location="dist" />
+	<property name="dist.war.dir" value="${dist.dir}/war" />
 	<property name="lib.dir" value="lib" />
 	<property name="logs.dir" value="log" />
 	<property name="logs.junit.dir" value="${logs.dir}/junit" />
 	<property name="logs.report.dir" value="${logs.dir}/test-report" />
 	<property name="resources.dir" value="resources" />
+	<property name="jsp.dir" value="${resources.dir}/jsp" />
+	<property name="webinf.dir" value="${resources.dir}/WEB-INF" />
 
 	<!-- paths used for compilation and run  -->
 	<path id="lib.path.id">
@@ -23,7 +26,7 @@
 	<path id="run.path.id">
 		<path refid="lib.path.id" />
 		<path location="${bin.dir}" />
-		<path location="${resources.dir}" />
+		<path location="${webinf.dir}" />
 	</path>
 
 	<target name="init">
@@ -47,12 +50,10 @@
 
 	<target name="compile-all" depends="compile, compile-tests" description="Compile all the sources" />
 
-	<target name="dist" depends="run-tests" description="generate the distribution">
-		<!-- Create the distribution directory -->
-		<mkdir dir="${dist.dir}/lib" />
+	<target name="dist" depends="run-unit-tests, create-war" description="generate the distribution">
+	</target>
 
-		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${bin.dir}" />
+	<target name="full-build" depends="run-all-tests, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
 	</target>
 
 	<target name="clean" description="clean up">
@@ -62,7 +63,7 @@
 		<delete dir="${logs.dir}" />
 	</target>
 
-	<target name="run-tests" depends="compile-all" description="run all tests">
+	<target name="run-unit-tests" depends="compile-all" description="run unit tests">
 		<delete dir="${logs.junit.dir}" />
 		<mkdir dir="${logs.junit.dir}" />
 		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
@@ -71,6 +72,19 @@
 				<fileset dir="${src.test.unit.dir}">
 					<include name="**/*Test.java" />
 				</fileset>
+			</batchtest>
+			<formatter type="plain" usefile="true" />
+			<formatter type="xml" usefile="true" />
+		</junit>
+		<fail if="tests.failed" message="Test(s) failed." />
+	</target>
+
+	<target name="run-component-tests" depends="compile-all" description="run component tests">
+		<delete dir="${logs.junit.dir}" />
+		<mkdir dir="${logs.junit.dir}" />
+		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
+			<classpath refid="run.path.id" />
+			<batchtest fork="yes" todir="${logs.junit.dir}" unless="testcase">
 				<fileset dir="${src.test.component.dir}">
 					<include name="**/*Test.java" />
 				</fileset>
@@ -81,7 +95,11 @@
 		<fail if="tests.failed" message="Test(s) failed." />
 	</target>
 
-	<target name="run-test-reports" depends="run-tests" description="prepare test repots">
+	<target name="run-all-tests" depends="run-unit-tests, run-component-tests" description="run all tests">
+		<antcall target="run-test-reports"></antcall>
+	</target>
+
+	<target name="run-test-reports" description="prepare test repots">
 		<delete dir="${logs.report.dir}" />
 		<mkdir dir="${logs.report.dir}" />
 		<junitreport todir="${logs.report.dir}">
@@ -93,4 +111,17 @@
 		</junitreport>
 	</target>
 
+	<target name="create-war" depends="compile, run-unit-tests" description="create WAR file with the apllication">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist.war.dir}" />
+
+		<war destfile="${dist.war.dir}/librarian.war" webxml="${webinf.dir}/web.xml">
+			<fileset dir="${jsp.dir}" />
+			<lib dir="${lib.dir}" />
+			<classes dir="${bin.dir}" />
+			<webinf dir="${webinf.dir}">
+				<exclude name="web.xml" />
+			</webinf>
+		</war>
+	</target>
 </project>
