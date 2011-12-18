@@ -1,23 +1,38 @@
-<project name="librarian_db" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="librarian_db" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant"
+	xmlns:ac="antlib:net.sf.antcontrib">
 	<description>
 		Database related build tasks for librarian
 	</description>
 
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
 	<property name="db.dir" location="db" />
 
 	<target name="drop_database" description="drop database">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id"
-			userid="root" password="root" src="${db.dir}/drop_database.sql" />
+		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql"
+			classpathref="run.path.id" userid="root" password="root"
+			src="${db.dir}/drop_database.sql" />
 	</target>
 
-	<target name="create_database" depends="drop_database" description="create database">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id"
-			userid="root" password="root" src="${db.dir}/create_database.sql" />
+	<target name="create_database" depends="drop_database"
+		description="create database">
+		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql"
+			classpathref="run.path.id" userid="root" password="root"
+			src="${db.dir}/create_database.sql" />
 	</target>
 
-	<target name="create_db_objects" depends="create_database" description="create all database objects">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/dev_librarian" classpathref="run.path.id"
-			userid="dev_librarian" password="dev_librarian" src="${db.dir}/tables/all_tables.sql" />
+	<target name="create_db_objects" depends="create_database"
+		description="create all database objects">
+		<ac:for param="file">
+			<path>
+				<fileset dir="${db.dir}/tables/" includes="*.sql" />
+			</path>
+			<sequential>
+				<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/dev_librarian"
+					classpathref="run.path.id" userid="dev_librarian" password="dev_librarian"
+					src="@{file}" />
+			</sequential>
+		</ac:for>
 	</target>
 
 
