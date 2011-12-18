@@ -14,7 +14,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/root-context.xml" })
+@ContextConfiguration(locations = { "/spring/root-context.xml" })
 @TransactionConfiguration(defaultRollback=true)
 @Transactional
 public class BookTest extends AbstractTransactionalJUnit4SpringContextTests {

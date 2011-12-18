@@ -62,13 +62,12 @@
 		<delete dir="${logs.dir}" />
 	</target>
 
-	<target name="run-unit-tests" depends="compile-all" description="run unit tests">
-		<delete dir="${logs.junit.dir}" />
+	<target name="run-tests" depends="compile-all" description="run tests for the specified folder (in parameter run.test.dir)">
 		<mkdir dir="${logs.junit.dir}" />
 		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
 			<classpath refid="run.path.id" />
 			<batchtest fork="yes" todir="${logs.junit.dir}" unless="testcase">
-				<fileset dir="${src.test.unit.dir}">
+				<fileset dir="${run.test.dir}">
 					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
@@ -76,25 +75,22 @@
 			<formatter type="xml" usefile="true" />
 		</junit>
 		<fail if="tests.failed" message="Test(s) failed." />
+	</target>
+
+	<target name="run-unit-tests" depends="compile-all" description="run unit tests">
+		<antcall target="run-tests">
+				<param name="run.test.dir" value="${src.test.unit.dir}"/>
+		</antcall>
 	</target>
 
 	<target name="run-component-tests" depends="compile-all" description="run component tests">
-		<delete dir="${logs.junit.dir}" />
-		<mkdir dir="${logs.junit.dir}" />
-		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
-			<classpath refid="run.path.id" />
-			<batchtest fork="yes" todir="${logs.junit.dir}" unless="testcase">
-				<fileset dir="${src.test.component.dir}">
-					<include name="**/*Test.java" />
-				</fileset>
-			</batchtest>
-			<formatter type="plain" usefile="true" />
-			<formatter type="xml" usefile="true" />
-		</junit>
-		<fail if="tests.failed" message="Test(s) failed." />
+		<antcall target="run-tests">
+				<param name="run.test.dir" value="${src.test.component.dir}"/>
+		</antcall>
 	</target>
 
 	<target name="run-all-tests" depends="run-unit-tests, run-component-tests" description="run all tests">
+		<delete dir="${logs.junit.dir}" />
 		<antcall target="run-test-reports"></antcall>
 	</target>
 
