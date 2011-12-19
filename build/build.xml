@@ -2,17 +2,16 @@
 	<description>
         Main build file for librarian
     </description>
-	
+
 	<!-- set global properties for this build -->
-	<property file="build/build.properties"/>
+	<property file="build/build.properties" />
 
 	<!-- This is default DB configuration to be used if not specified differently on the command line -->
-	<property name="db.configuration" value="test"/>
+	<property name="db.configuration" value="test" />
 
+	<import file="./build_common.xml" />
+	<import file="./db_build.xml" />
 
-	<import file="./build_common.xml"/>
-	<import file="./db_build.xml"/>
-	
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp />
@@ -22,14 +21,17 @@
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id" />
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id" includeantruntime="false" />
 	</target>
 
 	<target name="compile-tests" depends="init" description="compile the tests ">
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
-		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.test.dir}" destdir="${bin.dir}" classpathref="lib.path.id" />
+		<!-- Compile the java code from ${src.test.xxx} into ${build} -->
+		<javac destdir="${bin.dir}" classpathref="lib.path.id" includeantruntime="false">
+			<src path="${src.test.unit.dir}" />
+			<src path="${src.test.component.dir}" />
+		</javac>
 	</target>
 
 	<target name="compile-all" depends="compile, compile-tests" description="Compile all the sources" />
@@ -64,21 +66,24 @@
 
 	<target name="run-unit-tests" depends="compile-all" description="run unit tests">
 		<antcall target="run-tests">
-				<param name="run.test.dir" value="${src.test.unit.dir}"/>
+			<param name="run.test.dir" value="${src.test.unit.dir}" />
 		</antcall>
 	</target>
 
 	<target name="run-component-tests" depends="compile-all" description="run component tests">
 		<antcall target="run-tests">
-				<param name="run.test.dir" value="${src.test.component.dir}"/>
+			<param name="run.test.dir" value="${src.test.component.dir}" />
 		</antcall>
 	</target>
 
 	<target name="run-all-tests-and-report" description="run all tests and craete test report">
 		<delete dir="${logs.junit.dir}" />
-		<antcall target="run-unit-tests"></antcall>
-		<antcall target="run-component-tests"></antcall>
-		<antcall target="run-test-reports"></antcall>
+		<antcall target="run-unit-tests">
+		</antcall>
+		<antcall target="run-component-tests">
+		</antcall>
+		<antcall target="run-test-reports">
+		</antcall>
 	</target>
 
 	<target name="run-test-reports" description="prepare test repots">
@@ -94,16 +99,18 @@
 	</target>
 
 	<target name="create-war" depends="compile, run-unit-tests" description="create WAR file with the apllication">
+		<echo message="Creating WAR for db.configuration=${db.configuration}" />
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist.war.dir}" />
 
 		<war destfile="${dist.war.dir}/librarian.war" webxml="${webinf.dir}/web.xml">
 			<lib dir="${lib.dir}" />
 			<classes dir="${bin.dir}" />
+			<classes dir="${current.config.dir}/" />
 			<webinf dir="${webinf.dir}">
 				<exclude name="web.xml" />
 			</webinf>
 		</war>
 	</target>
-	
+
 </project>

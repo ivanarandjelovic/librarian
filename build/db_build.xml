@@ -32,6 +32,7 @@
 
 
 	<target name="db_create_all" description="create all database objects from scratch">
+		<echo message="Creating all DB objects for db.configuration=${db.configuration}" />
 		<antcall target="db_drop_database"/>
 		<antcall target="db_create_database"/>
 		

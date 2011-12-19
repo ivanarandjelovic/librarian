@@ -1,11 +1,13 @@
-<project name="librarian" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="librarian_common" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<description>
         Some common definitions used in multiple build files
     </description>
 	
 	<!-- set global properties for this build -->
 	<property file="build/build.properties"/>
-	
+
+	<property name="current.config.dir" location="${config.dir}/${db.configuration}/" />
+
 	<!-- paths used for compilation and run  -->
 	<path id="lib.path.id">
 		<fileset dir="${lib.dir}" />
@@ -13,7 +15,7 @@
 	<path id="run.path.id">
 		<path refid="lib.path.id" />
 		<path location="${bin.dir}" />
-		<path location="${config.dir}/${db.configuration}/" />
+		<path location="${current.config.dir}/" />
 		<path location="${webinf.dir}" />
 	</path>
 
