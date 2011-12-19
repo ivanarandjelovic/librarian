@@ -8,9 +8,9 @@
 	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost/sptest1" />
-		<property name="username" value="sptest1" />
-		<property name="password" value="sptest1" />
+		<property name="url" value="jdbc:mysql://localhost/dev_librarian" />
+		<property name="username" value="dev_librarian" />
+		<property name="password" value="dev_librarian" />
 	</bean>
 
 	<bean id="mySessionFactory"

@@ -1,3 +1,3 @@
 use mysql;
 
-CREATE USER 'dev_librarian'@'%' IDENTIFIED BY 'dev_librarian';
+CREATE USER 'dev_librarian'@'localhost' IDENTIFIED BY 'dev_librarian';

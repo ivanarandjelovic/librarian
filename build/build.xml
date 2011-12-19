@@ -91,8 +91,10 @@
 		</antcall>
 	</target>
 
-	<target name="run-all-tests" depends="run-unit-tests, run-component-tests" description="run all tests">
+	<target name="run-all-tests" description="run all tests">
 		<delete dir="${logs.junit.dir}" />
+		<antcall target="run-unit-tests"></antcall>
+		<antcall target="run-component-tests"></antcall>
 		<antcall target="run-test-reports"></antcall>
 	</target>
 
@@ -121,6 +123,12 @@
 		</war>
 	</target>
 	
-	<target name="re-build-db" depends="create_db_objects" description="drop and create new dev database">
+	<target name="db_create_db_and_user" description="create new dev database and user only">
+		<antcall target="db_create_user"/>
+		<antcall target="db_create_database"/>
 	</target>
+
+	<target name="re-build_db" depends="db_re-create_all" description="drop and create new dev database with all objects">
+	</target>
+
 </project>
