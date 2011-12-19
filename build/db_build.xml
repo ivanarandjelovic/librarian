@@ -4,15 +4,15 @@
 	</description>
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-
+	
 	<!-- Import common defintions -->
 	<import file="./build_common.xml"/>
 
 	<!-- set global properties for this build -->
-	<property file="build/build.properties"/>
+	<property file="${build.dir}/build.properties"/>
 
 	<!-- set database properties (used in sql statements and in build) -->
-	<property file="build/db.properties"/>
+	<property file="${config.dir}/${db.configuration}/db.properties"/>
 
 	<target name="db_create_user" description="create user, intended to be run manually, only once">
 		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/create_user.sql" />

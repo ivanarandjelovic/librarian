@@ -6,6 +6,10 @@
 	<!-- set global properties for this build -->
 	<property file="build/build.properties"/>
 
+	<!-- This is default DB configuration to be used if not specified differently on the command line -->
+	<property name="db.configuration" value="test"/>
+
+
 	<import file="./build_common.xml"/>
 	<import file="./db_build.xml"/>
 	
@@ -33,7 +37,7 @@
 	<target name="dist" depends="run-unit-tests, create-war" description="generate the distribution">
 	</target>
 
-	<target name="full-build" depends="run-all-tests, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
+	<target name="full-build" depends="run-all-tests-and-report, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
 	</target>
 
 	<target name="clean" description="clean up">
@@ -70,7 +74,7 @@
 		</antcall>
 	</target>
 
-	<target name="run-all-tests" description="run all tests">
+	<target name="run-all-tests-and-report" description="run all tests and craete test report">
 		<delete dir="${logs.junit.dir}" />
 		<antcall target="run-unit-tests"></antcall>
 		<antcall target="run-component-tests"></antcall>

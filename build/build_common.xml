@@ -1,4 +1,4 @@
-<project name="librarian" default="dist" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="librarian" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<description>
         Some common definitions used in multiple build files
     </description>
@@ -13,6 +13,7 @@
 	<path id="run.path.id">
 		<path refid="lib.path.id" />
 		<path location="${bin.dir}" />
+		<path location="${config.dir}/${db.configuration}/" />
 		<path location="${webinf.dir}" />
 	</path>
 
