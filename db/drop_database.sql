@@ -1,4 +1,4 @@
-use mysql;
+use ${db.root.name};
 
-drop database if exists dev_librarian;
+drop database if exists ${db.name};
 

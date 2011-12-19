@@ -1,3 +1,3 @@
-use mysql;
+use ${db.root.name};
 
-CREATE USER 'dev_librarian'@'localhost' IDENTIFIED BY 'dev_librarian';
+CREATE USER '${db.user}'@'localhost' IDENTIFIED BY '${db.password}';

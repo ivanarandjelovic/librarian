@@ -1,3 +1,3 @@
-use mysql;
+use ${db.root.name};
 
-DROP USER 'dev_librarian'@'localhost';
+DROP USER '${db.user}'@'localhost';

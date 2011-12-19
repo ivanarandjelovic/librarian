@@ -1,5 +1,5 @@
-use mysql;
+use ${db.root.name};
 
-create database if not exists dev_librarian;
+create database if not exists ${db.name};
 
-GRANT ALL PRIVILEGES ON dev_librarian.* TO 'dev_librarian'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON ${db.name}.* TO '${db.user}'@'localhost' WITH GRANT OPTION;
