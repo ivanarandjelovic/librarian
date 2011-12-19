@@ -1,4 +1,1 @@
-
-source tables/0100_book.sql
-
-
+tables/book.sql

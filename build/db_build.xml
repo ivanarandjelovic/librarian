@@ -5,36 +5,39 @@
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
-	<property name="db.dir" location="db" />
+	<!-- Import common defintions -->
+	<import file="./build_common.xml"/>
 
-	<target name="db_drop_user" description="drop user">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/db_drop_user.sql" />
+	<!-- set global properties for this build -->
+	<property file="build/build.properties"/>
+
+	<target name="db_create_user" description="create user, intended to be run manually, only once">
+		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/create_user.sql" />
+	</target>
+
+	<target name="db_drop_user" description="drop user, intended to be run manually, only when needed">
+		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/drop_user.sql" />
 	</target>
 	
  	<target name="db_drop_database" description="drop database">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/db_drop_database.sql" />
+		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/drop_database.sql" onerror="continue"/>
 	</target>
 
-	<target name="db_create_database" description="create database">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/db_create_database.sql" />
-	</target>
-
-	<target name="db_create_user" description="create user">
-		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/db_create_user.sql" />
+	<target name="db_create_database" description="create database, expects that DB user already exists">
+		<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/mysql" classpathref="run.path.id" userid="root" password="root" src="${db.dir}/create_database.sql" />
 	</target>
 
 
-	<target name="db_re-create_all" description="create all database objects from scratch">
+	<target name="db_create_all" description="create all database objects from scratch">
 		<antcall target="db_drop_database"/>
-		<antcall target="db_drop_user"/>
-		<antcall target="db_create_user"/>
 		<antcall target="db_create_database"/>
-		<ac:for param="file">
-			<path>
-				<fileset dir="${db.dir}/tables/" includes="*.sql" />
-			</path>
+		
+		<!-- Iterate and execute each table file -->
+		<loadfile property="table-files" srcFile="${db.dir}/all_tables.sql"/>
+
+		<ac:for param="file" list="${table-files}" delimiter="${line.separator}">
 			<sequential>
-				<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/dev_librarian" classpathref="run.path.id" userid="dev_librarian" password="dev_librarian" src="@{file}" />
+				<sql driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/dev_librarian" classpathref="run.path.id" userid="dev_librarian" password="dev_librarian" src="${db.dir}/@{file}" />
 			</sequential>
 		</ac:for>
 	</target>
