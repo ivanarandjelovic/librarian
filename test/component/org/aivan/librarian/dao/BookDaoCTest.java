@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml" })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback=true)
-@Transactional
 public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private static final int NON_EXISTING_BOOK_ID = -1;
@@ -35,11 +34,11 @@ public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests 
 		try {
 			Book book = bookDao.getBook(new Long(NON_EXISTING_BOOK_ID));
 			book.getId();
+			fail("Object should  have not been found!");
 		} catch (ObjectNotFoundException onf) {
 			// This is what we expect
-			return;
+			assert(true);
 		}
-		fail("Object should  have not been found!");
 	}
 
 	@Test

@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml" })
 @TransactionConfiguration(defaultRollback=true)
-@Transactional
 public class BookServiceCTest {
 
 	private static final Long KNOWN_BOOK_ID = new Long(1);
@@ -36,12 +35,14 @@ public class BookServiceCTest {
 	}
 
 	@Test
+	@Transactional
 	public void testGetAllBooks() {
 		List<Book> books = bookService.getAllBooks();
 		assertNotNull("List of book should never be null",books);
 	}
 
 	//@Test
+	@Transactional
 	public void testGetOneBook() {
 		Book book = bookService.getBook(KNOWN_BOOK_ID);
 		assertNotNull("Known book was not found",book);
