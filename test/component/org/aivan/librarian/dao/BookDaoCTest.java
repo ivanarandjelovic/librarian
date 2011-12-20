@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml" })
-@TransactionConfiguration(defaultRollback=true)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback=true)
 @Transactional
-public class BookTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private static final int NON_EXISTING_BOOK_ID = -1;
 	

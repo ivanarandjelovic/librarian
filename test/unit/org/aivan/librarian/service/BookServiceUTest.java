@@ -10,7 +10,7 @@ import org.aivan.librarian.dao.entity.BookMock;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BookServiceTest {
+public class BookServiceUTest {
 
 	BookDaoMockImpl bookDaoMock;
 	BookService bookService;

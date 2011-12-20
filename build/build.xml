@@ -61,22 +61,24 @@
 			<formatter type="plain" usefile="true" />
 			<formatter type="xml" usefile="true" />
 		</junit>
-		<fail if="tests.failed" message="Test(s) failed." />
 	</target>
 
 	<target name="run-unit-tests" depends="compile-all" description="run unit tests">
 		<antcall target="run-tests">
 			<param name="run.test.dir" value="${src.test.unit.dir}" />
 		</antcall>
+		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
 	</target>
 
 	<target name="run-component-tests" depends="compile-all" description="run component tests">
 		<antcall target="run-tests">
 			<param name="run.test.dir" value="${src.test.component.dir}" />
 		</antcall>
+		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
 	</target>
 
 	<target name="run-all-tests-and-report" description="run all tests and craete test report">
+		<property name="test.continue.on.fail" value="true"/>
 		<delete dir="${logs.junit.dir}" />
 		<antcall target="run-unit-tests">
 		</antcall>
@@ -84,6 +86,7 @@
 		</antcall>
 		<antcall target="run-test-reports">
 		</antcall>
+		<fail if="tests.failed" message="Test(s) failed." />
 	</target>
 
 	<target name="run-test-reports" description="prepare test repots">
