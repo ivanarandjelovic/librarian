@@ -2,9 +2,9 @@
 	<description>
         Some common definitions used in multiple build files
     </description>
-	
+
 	<!-- set global properties for this build -->
-	<property file="build/build.properties"/>
+	<property file="build/build.properties" />
 
 	<property name="current.config.dir" location="${config.dir}/${db.configuration}/" />
 
@@ -14,9 +14,18 @@
 	</path>
 	<path id="run.path.id">
 		<path refid="lib.path.id" />
+		<path location="${bin-instrumented.dir}" />
 		<path location="${bin.dir}" />
 		<path location="${current.config.dir}/" />
 		<path location="${webinf.dir}" />
+	</path>
+	<path id="cobertura.path.id">
+		<fileset dir="${lib.dir}/util/">
+			<include name="asm-3.0.jar" />
+			<include name="asm-tree-3.0.jar" />
+			<include name="cobertura.jar" />
+			<include name="jakarta-oro-2.0.8.jar" />
+		</fileset>
 	</path>
 
 </project>

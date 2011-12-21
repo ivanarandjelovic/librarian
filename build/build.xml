@@ -12,6 +12,9 @@
 	<import file="./build_common.xml" />
 	<import file="./db_build.xml" />
 
+	<!-- Cobertura tasks, for code coverage -->
+	<taskdef classpathref="cobertura.path.id" resource="tasks.properties"/>
+	
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp />
@@ -21,25 +24,34 @@
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id" includeantruntime="false" />
+		<javac debug="true" srcdir="${src.dir}" destdir="${bin.dir}" classpathref="lib.path.id" includeantruntime="false" />
+		
+		<!-- Prepare classes for code coverage -->
+		<delete dir="${bin-instrumented.dir}"/>
+		<cobertura-instrument todir="${bin-instrumented.dir}">
+		    <fileset dir="${bin.dir}">
+		        <include name="**/*.class"/>
+		    </fileset>
+		</cobertura-instrument>
+		
 	</target>
 
 	<target name="compile-tests" depends="init" description="compile the tests ">
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${bin.dir}" />
 		<!-- Compile the java code from ${src.test.xxx} into ${build} -->
-		<javac destdir="${bin.dir}" classpathref="lib.path.id" includeantruntime="false">
+		<javac  debug="true" destdir="${bin.dir}" classpathref="lib.path.id" includeantruntime="false">
 			<src path="${src.test.unit.dir}" />
 			<src path="${src.test.component.dir}" />
 		</javac>
 	</target>
 
-	<target name="compile-all" depends="compile, compile-tests" description="Compile all the sources" />
+	<target name="compile-all" depends="compile, compile-tests" description="Compile all the sources"/>
 
 	<target name="dist" depends="run-unit-tests, create-war" description="generate the distribution">
 	</target>
 
-	<target name="full-build" depends="run-all-tests-and-report, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
+	<target name="full-build" depends="run-all-tests-and-reports, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
 	</target>
 
 	<target name="clean" description="clean up">
@@ -47,11 +59,18 @@
 		<delete dir="${bin.dir}" />
 		<delete dir="${dist.dir}" />
 		<delete dir="${logs.dir}" />
+		<delete dir="${bin-instrumented.dir}" />
+		<delete file="${cobertura.ser.file}"/>
 	</target>
 
 	<target name="run-tests" depends="compile-all" description="run tests for the specified folder (in parameter run.test.dir)">
 		<mkdir dir="${logs.junit.dir}" />
 		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
+			<!--
+				Specify the name of the coverage data file to use.
+				The value specified below is the default.
+			-->
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.ser.file}" />
 			<classpath refid="run.path.id" />
 			<batchtest fork="yes" todir="${logs.junit.dir}" unless="testcase">
 				<fileset dir="${run.test.dir}">
@@ -77,29 +96,34 @@
 		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
 	</target>
 
-	<target name="run-all-tests-and-report" description="run all tests and craete test report">
+	<target name="run-all-tests-and-reports" description="run all tests and craete test report">
 		<property name="test.continue.on.fail" value="true"/>
 		<delete dir="${logs.junit.dir}" />
-		<antcall target="run-unit-tests">
-		</antcall>
-		<antcall target="run-component-tests">
-		</antcall>
-		<antcall target="run-test-reports">
-		</antcall>
+		<antcall target="run-unit-tests"/>
+		<antcall target="run-component-tests"/>
+		<antcall target="run-test-reports"/>
+		<antcall target="run-coverage-report"/>
 		<fail if="tests.failed" message="Test(s) failed." />
 	</target>
 
 	<target name="run-test-reports" description="prepare test repots">
-		<delete dir="${logs.report.dir}" />
-		<mkdir dir="${logs.report.dir}" />
-		<junitreport todir="${logs.report.dir}">
+		<delete dir="${logs.junit-report.dir}" />
+		<mkdir dir="${logs.junit-report.dir}" />
+		<junitreport todir="${logs.junit-report.dir}">
 			<fileset dir="${logs.junit.dir}">
 				<include name="TEST-*.xml" />
 				<include name="TEST-*.txt" />
 			</fileset>
-			<report format="frames" todir="${logs.report.dir}" />
+			<report format="frames" todir="${logs.junit-report.dir}" />
 		</junitreport>
 	</target>
+	
+	<target name="run-coverage-report">
+		<delete dir="${logs.coverage-report.dir}"/>
+	    <cobertura-report datafile="${cobertura.ser.file}" 
+	    	srcdir="${src.dir}" destdir="${logs.coverage-report.dir}"/>
+	</target>
+
 
 	<target name="create-war" depends="compile, run-unit-tests" description="create WAR file with the apllication">
 		<echo message="Creating WAR for db.configuration=${db.configuration}" />
