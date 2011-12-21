@@ -20,7 +20,6 @@
 	</path>
 	<path id="run.test.path.id">
 		<path refid="lib.path.id" />
-		<path location="${bin.instrumented.dir}" />
 		<path location="${bin.app.dir}" />
 		<path location="${bin.test.unit.dir}" />
 		<path location="${bin.test.component.dir}" />

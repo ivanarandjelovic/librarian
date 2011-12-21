@@ -25,15 +25,6 @@
 		<mkdir dir="${bin.app.dir}" />
 		<!-- Compile the java code from ${src} into ${build} -->
 		<javac debug="true" srcdir="${src.app.dir}" destdir="${bin.app.dir}" classpathref="lib.path.id" includeantruntime="false" />
-		
-		<!-- Prepare classes for code coverage -->
-		<delete dir="${bin.instrumented.dir}"/>
-		<cobertura-instrument todir="${bin.instrumented.dir}">
-		    <fileset dir="${bin.app.dir}">
-		        <include name="**/*.class"/>
-		    </fileset>
-		</cobertura-instrument>
-		
 	</target>
 
 	<target name="compile-tests" depends="init, compile-app" description="compile the tests ">
@@ -55,25 +46,39 @@
 	<target name="dist" depends="run-unit-tests, create-war" description="generate the distribution">
 	</target>
 
-	<target name="full-build" depends="run-all-tests-and-reports, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
+	<target name="full-build" depends="run-all-tests-and-reports-with-coverage, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
 	</target>
 
 	<target name="clean" description="clean up">
 		<delete dir="${bin.dir}" />
 		<delete dir="${dist.dir}" />
 		<delete dir="${report.dir}" />
-		<delete file="${cobertura.ser.file}"/>
 	</target>
 
 	<target name="run-tests" depends="compile-all" description="run tests for the specified folder (in parameter run.test.dir)">
 		<mkdir dir="${report.junit.dir}" />
+		
+		<if>
+			<equals arg1="${run.coverage}" arg2="true" />
+			<then>
+				<path id="run.current.test.path.id">
+					<path location="${bin.instrumented.dir}" />
+					<path refid="run.test.path.id" />
+				</path>
+			</then>
+			<else>
+			<path id="run.current.test.path.id">
+				<path refid="run.test.path.id" />
+			</path>
+			</else>
+		</if>
 		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
 			<!--
 				Specify the name of the coverage data file to use.
 				The value specified below is the default.
 			-->
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.ser.file}" />
-			<classpath refid="run.test.path.id" />
+			<classpath refid="run.current.test.path.id" />
 			<batchtest fork="yes" todir="${report.junit.dir}" unless="testcase">
 				<fileset dir="${run.test.dir}">
 					<include name="**/*Test.java" />
@@ -98,16 +103,41 @@
 		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
 	</target>
 
-	<target name="run-all-tests-and-reports" description="run all tests and craete test report">
-		<property name="test.continue.on.fail" value="true"/>
+	<target name="run-all-test-and-reports">
 		<delete dir="${report.junit.dir}" />
 		<antcall target="run-unit-tests"/>
 		<antcall target="run-component-tests"/>
 		<antcall target="run-test-reports"/>
+	</target>
+	
+	<target name="run-all-tests-and-reports-no-coverage" depends="compile-all" description="run all tests and craete test report">
+		<property name="test.continue.on.fail" value="true"/>
+		<antcall target="run-all-test-and-reports"/>
+		<fail if="tests.failed" message="Test(s) failed." />
+	</target>
+
+	<target name="run-all-tests-and-reports-with-coverage" depends="compile-all" description="run all tests and craete test report plus include coverage report">
+		<property name="test.continue.on.fail" value="true"/>
+		<property name="run.coverage" value="true"/>
+		<delete file="${cobertura.ser.file}"/>
+		<antcall target="cobertura-instrument-app-classes"/>
+		<antcall target="run-all-test-and-reports"/>
 		<antcall target="run-coverage-report"/>
 		<fail if="tests.failed" message="Test(s) failed." />
 	</target>
 
+	<target name="cobertura-instrument-app-classes">
+		<!-- Prepare classes for code coverage -->
+		<delete dir="${bin.instrumented.dir}"/>
+		<cobertura-instrument todir="${bin.instrumented.dir}" datafile="${cobertura.ser.file}">
+		    <fileset dir="${bin.app.dir}">
+		        <include name="**/*.class"/>
+		    	<exclude name="**/StartApp*.class"/>
+		    </fileset>
+		</cobertura-instrument>
+	</target>
+
+	
 	<target name="run-test-reports" description="prepare test repots">
 		<delete dir="${report.junit-report.dir}" />
 		<mkdir dir="${report.junit-report.dir}" />
