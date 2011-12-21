@@ -12,10 +12,18 @@
 	<path id="lib.path.id">
 		<fileset dir="${lib.dir}" />
 	</path>
-	<path id="run.path.id">
+	<path id="run.app.path.id">
 		<path refid="lib.path.id" />
-		<path location="${bin-instrumented.dir}" />
-		<path location="${bin.dir}" />
+		<path location="${bin.app.dir}" />
+		<path location="${current.config.dir}/" />
+		<path location="${webinf.dir}" />
+	</path>
+	<path id="run.test.path.id">
+		<path refid="lib.path.id" />
+		<path location="${bin.instrumented.dir}" />
+		<path location="${bin.app.dir}" />
+		<path location="${bin.test.unit.dir}" />
+		<path location="${bin.test.component.dir}" />
 		<path location="${current.config.dir}/" />
 		<path location="${webinf.dir}" />
 	</path>
