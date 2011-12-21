@@ -153,7 +153,9 @@
 	<target name="run-coverage-report">
 		<delete dir="${report.coverage-report.dir}"/>
 	    <cobertura-report datafile="${cobertura.ser.file}" 
-	    	srcdir="${src.app.dir}" destdir="${report.coverage-report.dir}"/>
+	    	srcdir="${src.app.dir}" destdir="${report.coverage-report.dir}" format="xml"/>
+	    <cobertura-report datafile="${cobertura.ser.file}" 
+	    	srcdir="${src.app.dir}" destdir="${report.coverage-report.dir}" format="html"/>
 	</target>
 
 
