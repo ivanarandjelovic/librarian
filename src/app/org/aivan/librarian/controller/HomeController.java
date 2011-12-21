@@ -48,14 +48,4 @@ public class HomeController {
 		return "home";
 	}
 
-	public BookService getBookService() {
-		return bookService;
-	}
-
-	public void setBookService(BookService bookService) {
-		this.bookService = bookService;
-	}
-	
-	
-	
 }
