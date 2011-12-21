@@ -15,19 +15,19 @@
 	<property file="${config.dir}/${db.configuration}/db.properties"/>
 
 	<target name="db_create_user" description="create user, intended to be run manually, only once">
-		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/create_user.sql" />
+		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.app.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/create_user.sql" />
 	</target>
 
 	<target name="db_drop_user" description="drop user, intended to be run manually, only when needed">
-		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/drop_user.sql" />
+		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.app.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/drop_user.sql" />
 	</target>
 	
  	<target name="db_drop_database" description="drop database">
-		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/drop_database.sql" onerror="continue"/>
+		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.app.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/drop_database.sql" onerror="continue"/>
 	</target>
 
 	<target name="db_create_database" description="create database, expects that DB user already exists">
-		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/create_database.sql" />
+		<sql driver="com.mysql.jdbc.Driver" url="${db.root.url}" classpathref="run.app.path.id" userid="${db.root.user}" password="${db.root.password}" src="${db.dir}/create_database.sql" />
 	</target>
 
 
@@ -41,7 +41,7 @@
 
 		<ac:for param="file" list="${table-files}" delimiter="${line.separator}">
 			<sequential>
-				<sql driver="com.mysql.jdbc.Driver" url="${db.url}" classpathref="run.path.id" userid="${db.user}" password="${db.password}" src="${db.dir}/@{file}" />
+				<sql driver="com.mysql.jdbc.Driver" url="${db.url}" classpathref="run.app.path.id" userid="${db.user}" password="${db.password}" src="${db.dir}/@{file}" />
 			</sequential>
 		</ac:for>
 	</target>
