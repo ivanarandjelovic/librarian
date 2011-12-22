@@ -178,11 +178,10 @@
 	</target>
 
 	<target name="start-jetty-with-app" depends="dist" description="start embeded jetty instance with the built application">
-		<echo message="${toString:run.jetty.path.id}"/>
 		<forget>
 			<java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
 		</forget>
-		<waitfor maxwait="1" maxwaitunit="minute" checkevery="1000" checkeveryunit="millisecond">
+		<waitfor maxwait="1" maxwaitunit="minute" checkevery="100" checkeveryunit="millisecond">
 			<http url="http://localhost:8080/" />
 		</waitfor>
 	</target>
