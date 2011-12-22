@@ -39,11 +39,17 @@
 		<javac debug="true" destdir="${bin.test.component.dir}" classpathref="run.app.path.id" includeantruntime="false">
 			<src path="${src.test.component.dir}" />
 		</javac>
-	</target>
+
+		<!-- Functional tests -->
+		<mkdir dir="${bin.test.functional.dir}" />
+		<javac debug="true" destdir="${bin.test.functional.dir}" classpathref="run.app.path.id" includeantruntime="false">
+			<src path="${src.test.functional.dir}" />
+		</javac>
+</target>
 
 	<target name="compile-all" depends="compile-app, compile-tests" description="Compile all the sources" />
 
-	<target name="dist" depends="clean, create-war" description="generate the distribution">
+	<target name="dist" depends="create-war" description="generate the distribution">
 		<mkdir dir="${dist.dir}/${appStartupClassPath}"/>
 		<copy todir="${dist.dir}/${appStartupClassPath}" file="${bin.app.dir}/${appStartupClassPath}/${appStartupClassFileName}"/>
 	</target>
@@ -105,10 +111,18 @@
 		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
 	</target>
 
+	<target name="run-functional-tests" depends="compile-all, start-jetty-with-app" description="run component tests">
+		<antcall target="run-tests">
+			<param name="run.test.dir" value="${src.test.functional.dir}" />
+		</antcall>
+		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
+	</target>
+
 	<target name="run-all-test-and-reports">
 		<delete dir="${report.junit.dir}" />
 		<antcall target="run-unit-tests" />
 		<antcall target="run-component-tests" />
+		<antcall target="run-functional-tests" />
 		<antcall target="run-test-reports" />
 	</target>
 
@@ -168,6 +182,7 @@
 			<lib dir="${lib.dir}" >
 				<exclude name="jetty/*"/>
 				<exclude name="util/*"/>
+				<exclude name="jwebunit/*"/>
 			</lib>
 			<classes dir="${bin.app.dir}" />
 			<classes dir="${current.config.dir}/" />
