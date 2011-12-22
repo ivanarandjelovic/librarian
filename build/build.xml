@@ -183,7 +183,7 @@
 			<java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
 		</forget>
 		<waitfor maxwait="1" maxwaitunit="minute" checkevery="1000" checkeveryunit="millisecond">
-			<http url="http://localhost:8080/gg" />
+			<http url="http://localhost:8080/" />
 		</waitfor>
 	</target>
 
