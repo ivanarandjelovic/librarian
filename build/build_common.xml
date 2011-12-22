@@ -27,13 +27,17 @@
 		<path location="${webinf.dir}" />
 	</path>
 	<path id="cobertura.path.id">
-		<path location="${lib.dir}/log4j-1.2.16.jar"/>
+		<path location="${lib.dir}/log4j-1.2.16.jar" />
 		<fileset dir="${lib.dir}/util/">
 			<include name="asm-3.0.jar" />
 			<include name="asm-tree-3.0.jar" />
 			<include name="cobertura.jar" />
 			<include name="jakarta-oro-2.0.8.jar" />
 		</fileset>
+	</path>
+	<path id="run.jetty.path.id">
+		<path location="${config.dir}/${db.configuration}" />
+		<path refid="run.app.path.id" />
 	</path>
 
 </project>

@@ -169,7 +169,7 @@
 				<exclude name="jetty/*"/>
 				<exclude name="util/*"/>
 			</lib>
-			<classes dir="${bin.dir}" />
+			<classes dir="${bin.app.dir}" />
 			<classes dir="${current.config.dir}/" />
 			<webinf dir="${webinf.dir}">
 				<exclude name="web.xml" />
@@ -178,11 +178,12 @@
 	</target>
 
 	<target name="start-jetty-with-app" depends="dist" description="start embeded jetty instance with the built application">
+		<echo message="${toString:run.jetty.path.id}"/>
 		<forget>
-			<java classname="${appStartupClassName}" classpathref="run.app.path.id" />
+			<java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
 		</forget>
-		<waitfor maxwait="1" maxwaitunit="minute" checkevery="100" checkeveryunit="millisecond">
-			<http url="http://localhost:8080" />
+		<waitfor maxwait="1" maxwaitunit="minute" checkevery="1000" checkeveryunit="millisecond">
+			<http url="http://localhost:8080/gg" />
 		</waitfor>
 	</target>
 

@@ -16,22 +16,18 @@
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
-	<logger name="org.springframework.core">
+	<logger name="org.springframework">
 		<level value="info" />
 	</logger>
 	
-	<logger name="org.springframework.beans">
+	<logger name="org.hibernate">
 		<level value="info" />
 	</logger>
 	
-	<logger name="org.springframework.context">
+	<logger name="org.eclipse.jetty">
 		<level value="info" />
 	</logger>
-
-	<logger name="org.springframework.web">
-		<level value="info" />
-	</logger>
-
+	 
 	<!-- Root Logger -->
 	<root>
 		<priority value="debug" />
