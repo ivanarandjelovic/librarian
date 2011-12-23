@@ -10,7 +10,9 @@
 
 	<!-- paths used for compilation and run  -->
 	<path id="lib.path.id">
-		<fileset dir="${lib.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
 	</path>
 	<path id="run.app.path.id">
 		<path refid="lib.path.id" />
@@ -38,6 +40,9 @@
 	</path>
 	<path id="run.jetty.path.id">
 		<path location="${config.dir}/${db.configuration}" />
+		<fileset dir="${lib.dir}">
+			<include name="jetty/*.jar" />
+		</fileset>
 		<path refid="run.app.path.id" />
 	</path>
 
