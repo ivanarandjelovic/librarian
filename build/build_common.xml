@@ -10,9 +10,7 @@
 
 	<!-- paths used for compilation and run  -->
 	<path id="lib.path.id">
-		<fileset dir="${lib.dir}">
-			<include name="*.jar" />
-		</fileset>
+		<fileset dir="${lib.dir}"/>
 	</path>
 	<path id="run.app.path.id">
 		<path refid="lib.path.id" />
