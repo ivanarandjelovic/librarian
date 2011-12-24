@@ -1,7 +1,5 @@
 package org.aivan;
 
-import java.util.Date;
-
 import net.sourceforge.jwebunit.exception.TestingEngineResponseException;
 
 import org.junit.*;
@@ -36,8 +34,8 @@ public class ExampleWebTest {
 			fail("this was invalid URL, should have failed!");
 		} catch (TestingEngineResponseException e) {
 			// TODO: handle exception
-			assertTrue("Status code should be 404",e.getMessage().contains("404"));
-			assert(true);
+			assertTrue("Status code should be 404", e.getMessage().contains("404"));
+			assert (true);
 		}
 	}
 }
