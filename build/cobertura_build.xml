@@ -1,0 +1,27 @@
+<project name="librarian_cobertura" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>
+		Cobertura (code coverage related targets)
+	</description>
+
+	<target name="cobertura-instrument-app-classes">
+		<!-- Prepare classes for code coverage -->
+		<delete dir="${bin.instrumented.dir}" />
+		<cobertura-instrument todir="${bin.instrumented.dir}" datafile="${report.cobertura.ser.file}">
+			<fileset dir="${bin.app.dir}">
+				<include name="**/*.class" />
+				<exclude name="**/StartApp*.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
+
+	<target name="cobertura-run-coverage-report">
+		<delete dir="${report.coverage-report.dir}" />
+		<!-- produce XML version for CI(Jenkins) -->
+		<cobertura-report datafile="${report.cobertura.ser.file}" srcdir="${src.app.dir}"
+			destdir="${report.coverage-report.dir}" format="xml" />
+		<!-- produce HTML version for development -->
+		<cobertura-report datafile="${report.cobertura.ser.file}" srcdir="${src.app.dir}"
+			destdir="${report.coverage-report.dir}" format="html" />
+	</target>
+
+</project>
