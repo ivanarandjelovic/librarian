@@ -10,7 +10,7 @@
   <property name="db.configuration" value="test" />
 
   <import file="./build_common.xml" />
-  <import file="./cobertura_build.xml" />
+  <import file="./test_build.xml" />
   <import file="./db_build.xml" />
 
   <!-- Cobertura tasks, for code coverage -->
@@ -82,138 +82,6 @@
   <target name="release"
           depends="clean, run-all-tests-and-reports-with-coverage, dist"
           description="run clean full build with compilation, testing, packaging, deployment, etc...">
-  </target>
-
-  <target name="run-all-tests-and-reports-with-coverage"
-          depends="compile"
-          description="run all tests and craete test report plus include coverage report">
-    <var name="test.continue.on.fail" value="true" />
-    <property name="run.coverage" value="true" />
-    <delete file="${report.cobertura.ser.file}" />
-    <antcall target="cobertura-instrument-app-classes" />
-    <antcall target="junit-run-all-test-and-reports" />
-    <antcall target="cobertura-run-coverage-report" />
-    <fail if="global.tests.failed " message="Test(s) failed." />
-  </target>
-
-  <!-- run all tests and craete test report -->
-  <target name="run-all-tests-and-reports-no-coverage" depends="compile">
-    <var name="test.continue.on.fail" value="true" />
-    <antcall target="junit-run-all-test-and-reports" />
-    <fail if="global.tests.failed " message="Test(s) failed." />
-  </target>
-
-
-  <target name="junit-run-all-test-and-reports">
-    <delete dir="${report.junit.dir}" />
-    <antcall target="junit-run-unit-tests" />
-    <antcall target="junit-run-component-tests" />
-    <antcall target="junit-run-functional-tests" />
-    <antcall target="junit-run-test-reports" />
-  </target>
-
-  <target name="junit-run-unit-test-and-reports-with-coverage" description="run unit tests and create code coverage">
-    <var name="test.continue.on.fail" value="true" />
-    <property name="run.coverage" value="true" />
-    <delete file="${report.cobertura.ser.file}" />
-    <antcall target="cobertura-instrument-app-classes" />
-    <delete dir="${report.junit.dir}" />
-    <antcall target="junit-run-unit-tests" />
-    <antcall target="junit-run-test-reports" />
-    <antcall target="cobertura-run-coverage-report" />
-  </target>
-
-  <!-- run unit tests -->
-  <target name="junit-run-unit-tests" depends="compile">
-    <antcall target="junit-run-tests">
-      <param name="run.test.dir" value="${src.test.unit.dir}" />
-    </antcall>
-  </target>
-
-  <!-- run component tests -->
-  <target name="junit-run-component-tests" depends="compile">
-    <antcall target="junit-run-tests">
-      <param name="run.test.dir" value="${src.test.component.dir}" />
-    </antcall>
-  </target>
-
-  <!-- run component tests -->
-  <target name="junit-run-functional-tests" depends="compile, start-jetty-with-app">
-    <antcall target="junit-run-tests">
-      <param name="run.test.dir" value="${src.test.functional.dir}" />
-    </antcall>
-  </target>
-
-  <!-- prepare test repots -->
-  <target name="junit-run-test-reports">
-    <delete dir="${report.junit-report.dir}" />
-    <mkdir dir="${report.junit-report.dir}" />
-    <junitreport todir="${report.junit-report.dir}">
-      <fileset dir="${report.junit.dir}">
-        <include name="TEST-*.xml" />
-        <include name="TEST-*.txt" />
-      </fileset>
-      <report format="frames" todir="${report.junit-report.dir}" />
-    </junitreport>
-  </target>
-
-  <!-- run tests for the specified folder (in parameter run.test.dir) -->
-  <target name="junit-run-tests"
-          depends="compile">
-    <mkdir dir="${report.junit.dir}" />
-
-    <if>
-      <equals arg1="${run.coverage}" arg2="true" />
-      <then>
-        <path id="run.current.test.path.id">
-          <path location="${bin.instrumented.dir}" />
-          <path refid="run.test.path.id" />
-          <path refid="run.cobertura.path.id" />
-        </path>
-      </then>
-      <else>
-        <path id="run.current.test.path.id">
-          <path refid="run.test.path.id" />
-        </path>
-      </else>
-    </if>
-    <junit dir="${basedir}"
-           haltonfailure="false"
-           printsummary="yes"
-           errorProperty="tests.failed"
-           failureproperty="tests.failed">
-      <sysproperty key="net.sourceforge.cobertura.datafile" file="${report.cobertura.ser.file}" />
-      <classpath refid="run.current.test.path.id" />
-      <batchtest fork="yes" todir="${report.junit.dir}" unless="testcase">
-        <fileset dir="${run.test.dir}">
-          <include name="**/*Test.java" />
-        </fileset>
-      </batchtest>
-      <formatter type="plain" usefile="true" />
-      <formatter type="xml" usefile="true" />
-    </junit>
-    <fail message="Test(s) failed.">
-      <condition>
-        <and>
-          <isset property="tests.failed" />
-          <not>
-            <isset property="test.continue.on.fail" />
-          </not>
-        </and>
-      </condition>
-    </fail>
-  </target>
-
-  <!-- start embeded jetty instance with the built application -->
-  <target name="start-jetty-with-app"
-          depends="dist">
-    <echo message="${toString:run.jetty.path.id}" />
-    <forget>
-      <java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
-    </forget>
-    <waitfor maxwait="1" maxwaitunit="minute" checkevery="100" checkeveryunit="millisecond">
-      <http url="http://localhost:8080/" />
-    </waitfor>
   </target>
 
 </project>
