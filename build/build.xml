@@ -10,8 +10,8 @@
   <property name="db.configuration" value="test" />
 
   <import file="./build_common.xml" />
-  <import file="./test_build.xml" />
-  <import file="./db_build.xml" />
+  <import file="./build_test.xml" />
+  <import file="./build_db.xml" />
 
   <!-- Cobertura tasks, for code coverage -->
   <taskdef classpathref="run.cobertura.path.id" resource="tasks.properties" />

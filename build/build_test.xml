@@ -3,7 +3,7 @@
 		Build file containing test related targets
 	</description>
 
-  <import file="./cobertura_build.xml" />
+  <import file="./build_cobertura.xml" />
 
 	<target name="run-all-tests-and-reports-with-coverage" depends="compile"
 		description="run all tests and craete test report plus include coverage report">
