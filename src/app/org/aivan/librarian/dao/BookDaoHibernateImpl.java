@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+//TODO: It is not possible to have 100% unite test coverage with classes like these? Or is it?
+
 @Repository
-public class BookDaoImpl implements BookDao {
+public class BookDaoHibernateImpl implements BookDao {
 
 	private HibernateTemplate hibernateTemplate;
 

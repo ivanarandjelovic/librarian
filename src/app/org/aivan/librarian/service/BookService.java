@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * The class implement business logic related to books.
+ * The class implement business logic related to books (hibernate implementation).
  * 
  * @author iarandjelovic
  *
@@ -18,10 +18,8 @@ public class BookService {
 
 	BookDao bookDao;
 	
-	
 	@Autowired
 	public BookService(BookDao bookDao) {
-		super();
 		this.bookDao = bookDao;
 	}
 

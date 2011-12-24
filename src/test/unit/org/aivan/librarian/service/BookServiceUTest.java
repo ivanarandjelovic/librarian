@@ -15,9 +15,8 @@ public class BookServiceUTest {
 	BookDaoMockImpl bookDaoMock;
 	BookService bookService;
 
-	Book[] testBooks = new Book[] { new BookMock(-1, "Book 1"),
-			new BookMock(-2, "Book 2"), new BookMock(-3, "Book 3"),
-			new BookMock(-4, "Book 4"), new BookMock(-5, "Book 5") };
+	public Book[] testBooks = new Book[] { new BookMock(-1, "Book 1"), new BookMock(-2, "Book 2"),
+			new BookMock(-3, "Book 3"), new BookMock(-4, "Book 4"), new BookMock(-5, "Book 5") };
 
 	@Before
 	public void setUp() {
@@ -33,19 +32,19 @@ public class BookServiceUTest {
 
 	@Test
 	public void testGetAllBooks() {
-		List<Book> books  = bookService.getAllBooks();
+		List<Book> books = bookService.getAllBooks();
 		assertNotNull("result should be list of books", books);
-		assertTrue("Number of books is not as expected",  books.size() == testBooks.length);
-		for(Book book : books) {
+		assertTrue("Number of books is not as expected", books.size() == testBooks.length);
+		for (Book book : books) {
 			assertNotNull("Book must not be NULL", book);
 		}
 	}
 
 	@Test
 	public void testGetBook() {
-		
-		for(Book testBook : testBooks) {
-			Book book  = bookService.getBook(testBook.getId());
+
+		for (Book testBook : testBooks) {
+			Book book = bookService.getBook(testBook.getId());
 			assertNotNull(book);
 			assertTrue(book.getId().equals(testBook.getId()));
 			assertTrue(book.getTitle().equals(testBook.getTitle()));
