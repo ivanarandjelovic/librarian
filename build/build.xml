@@ -28,54 +28,39 @@
     <delete dir="${report.dir}" />
   </target>
 
-  <target name="compile-app" depends="init" description="compile the source of the application">
-    <!-- Create the build directory structure used by compile -->
+  <target name="compile" depends="init" description="compile all te sources">
     <mkdir dir="${bin.app.dir}" />
-    <!-- Compile the java code from ${src} into ${build} -->
     <javac debug="true"
            srcdir="${src.app.dir}"
            destdir="${bin.app.dir}"
            classpathref="lib.app.path.id"
            includeantruntime="false" />
-  </target>
-
-  <target name="compile-util" depends="init" description="compile the source of utility classes">
-    <!-- Create the build directory structure used by compile -->
     <mkdir dir="${bin.util.dir}" />
-    <!-- Compile the java code from ${src} into ${build} -->
     <javac debug="true"
            srcdir="${src.util.dir}"
            destdir="${bin.util.dir}"
            classpathref="run.jetty.path.id"
            includeantruntime="false" />
-  </target>
-
-  <target name="compile-tests" depends="init, compile-app" description="compile the tests ">
-    <!-- Unit tests -->
     <mkdir dir="${bin.test.unit.dir}" />
     <javac debug="true" destdir="${bin.test.unit.dir}" classpathref="run.test.path.id" includeantruntime="false">
       <src path="${src.test.unit.dir}" />
     </javac>
 
-    <!-- Component tests -->
     <mkdir dir="${bin.test.component.dir}" />
     <javac debug="true" destdir="${bin.test.component.dir}" classpathref="run.test.path.id" includeantruntime="false">
       <src path="${src.test.component.dir}" />
     </javac>
 
-    <!-- Functional tests -->
     <mkdir dir="${bin.test.functional.dir}" />
     <javac debug="true" destdir="${bin.test.functional.dir}" classpathref="run.test.path.id" includeantruntime="false">
       <src path="${src.test.functional.dir}" />
     </javac>
   </target>
 
-  <target name="compile-all" depends="compile-app, compile-util, compile-tests" description="Compile all the sources" />
-
   <target name="dist" depends="create-war" description="generate the distribution">
   </target>
 
-  <target name="create-war" depends="compile-app" description="create WAR file with the apllication">
+  <target name="create-war" depends="compile" description="create WAR file with the apllication">
     <echo message="Creating WAR for db.configuration=${db.configuration}" />
     <!-- Create the distribution directory -->
     <mkdir dir="${dist.war.dir}" />
@@ -96,7 +81,7 @@
   </target>
 
   <target name="run-all-tests-and-reports-with-coverage"
-          depends="compile-all"
+          depends="compile"
           description="run all tests and craete test report plus include coverage report">
     <var name="test.continue.on.fail" value="true" />
     <property name="run.coverage" value="true" />
@@ -108,7 +93,7 @@
   </target>
 
   <target name="run-all-tests-and-reports-no-coverage"
-          depends="compile-all"
+          depends="compile"
           description="run all tests and craete test report">
     <var name="test.continue.on.fail" value="true" />
     <antcall target="junit-run-all-test-and-reports" />
@@ -159,20 +144,20 @@
     <antcall target="cobertura-run-coverage-report" />
   </target>
 
-  <target name="junit-run-unit-tests" depends="compile-all" description="run unit tests">
+  <target name="junit-run-unit-tests" depends="compile" description="run unit tests">
     <antcall target="junit-run-tests">
       <param name="run.test.dir" value="${src.test.unit.dir}" />
     </antcall>
   </target>
 
-  <target name="junit-run-component-tests" depends="compile-all" description="run component tests">
+  <target name="junit-run-component-tests" depends="compile" description="run component tests">
     <antcall target="junit-run-tests">
       <param name="run.test.dir" value="${src.test.component.dir}" />
     </antcall>
   </target>
 
   <target name="junit-run-functional-tests"
-          depends="compile-all, start-jetty-with-app"
+          depends="compile, start-jetty-with-app"
           description="run component tests">
     <antcall target="junit-run-tests">
       <param name="run.test.dir" value="${src.test.functional.dir}" />
@@ -192,7 +177,7 @@
   </target>
 
   <target name="junit-run-tests"
-          depends="compile-all"
+          depends="compile"
           description="run tests for the specified folder (in parameter run.test.dir)">
     <mkdir dir="${report.junit.dir}" />
 
