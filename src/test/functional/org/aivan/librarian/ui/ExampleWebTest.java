@@ -1,4 +1,4 @@
-package org.aivan;
+package org.aivan.librarian.ui;
 
 import net.sourceforge.jwebunit.exception.TestingEngineResponseException;
 

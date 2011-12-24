@@ -1,0 +1,27 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <table name="book">
+        <column>id</column>
+        <column>title</column>
+        <row>
+            <value>1</value>
+            <value>Book Title 1</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>Book Title 2</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>Book Title 3</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>Book Title 4</value>
+        </row>
+        <row>
+            <value>5</value>
+            <value>Book Title 5</value>
+        </row>
+    </table>
+</dataset>
