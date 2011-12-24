@@ -20,15 +20,14 @@ import static org.springframework.test.web.ModelAndViewAssert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml", "/spring/appServlet/servlet-context.xml" })
-public class HomeControllerTest extends AbstractJUnit4SpringContextTests {
+public class HomeControllerCTest extends AbstractJUnit4SpringContextTests {
 
 	private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
-    private HandlerAdapter handlerAdapter;
+	private MockHttpServletResponse response;
+	private HandlerAdapter handlerAdapter;
 	@Autowired
 	private HomeController homeController;
 
-	
 	@Before
 	public void setUp() throws Exception {
 		request = new MockHttpServletRequest();
@@ -50,11 +49,10 @@ public class HomeControllerTest extends AbstractJUnit4SpringContextTests {
 
 		request.setRequestURI("/");
 		request.setMethod("GET");
-	       final ModelAndView mav = handlerAdapter.handle(request, response, 
-	           homeController);
-	       assertViewName(mav, "home");
-	       assertModelAttributeAvailable(mav, "books");
-	       assertModelAttributeAvailable(mav, "serverTime");
+		final ModelAndView mav = handlerAdapter.handle(request, response, homeController);
+		assertViewName(mav, "home");
+		assertModelAttributeAvailable(mav, "books");
+		assertModelAttributeAvailable(mav, "serverTime");
 
 	}
 
