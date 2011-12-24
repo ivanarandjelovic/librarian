@@ -9,39 +9,31 @@
 	<property name="current.config.dir" location="${config.dir}/${db.configuration}/" />
 
 	<!-- paths used for compilation and run  -->
-	<path id="lib.path.id">
-		<fileset dir="${lib.dir}"/>
+	<path id="lib.app.path.id">
+		<fileset dir="${lib.app.dir}"/>
 	</path>
 	<path id="run.app.path.id">
-		<path refid="lib.path.id" />
+		<path refid="lib.app.path.id" />
 		<path location="${bin.app.dir}" />
 		<path location="${current.config.dir}/" />
-		<path location="${webinf.dir}" />
+		<path location="${resources.webinf.dir}" />
 	</path>
 	<path id="run.test.path.id">
-		<path refid="lib.path.id" />
-		<path location="${bin.app.dir}" />
+		<path refid="run.app.path.id" />
+		<fileset dir="${lib.test.dir}" />
+		<fileset dir="${lib.jwebunit.dir}" />
 		<path location="${bin.test.unit.dir}" />
 		<path location="${bin.test.component.dir}" />
 		<path location="${bin.test.functional.dir}" />
-		<path location="${current.config.dir}/" />
-		<path location="${webinf.dir}" />
 	</path>
-	<path id="cobertura.path.id">
-		<path location="${lib.dir}/log4j-1.2.16.jar" />
-		<fileset dir="${lib.dir}/util/">
-			<include name="asm-3.0.jar" />
-			<include name="asm-tree-3.0.jar" />
-			<include name="cobertura.jar" />
-			<include name="jakarta-oro-2.0.8.jar" />
-		</fileset>
+	<path id="run.cobertura.path.id">
+		<path location="${lib.app.dir}/log4j-1.2.16.jar" />
+		<fileset dir="${lib.cobertura.dir}" />
 	</path>
 	<path id="run.jetty.path.id">
+		<path location="${bin.util.dir}" />
 		<path location="${config.dir}/${db.configuration}" />
-		<fileset dir="${lib.dir}">
-			<include name="jetty/*.jar" />
-		</fileset>
-		<path refid="run.app.path.id" />
+		<fileset dir="${lib.jetty.dir}" />
 	</path>
 
 </project>

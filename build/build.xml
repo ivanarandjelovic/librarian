@@ -1,205 +1,248 @@
 <project name="librarian" default="dist" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
-	<description>
+  <description>
         Main build file for librarian
     </description>
 
-	<!-- set global properties for this build -->
-	<property file="build/build.properties" />
+  <!-- set global properties for this build -->
+  <property file="build/build.properties" />
 
-	<!-- This is default DB configuration to be used if not specified differently on the command line -->
-	<property name="db.configuration" value="test" />
+  <!-- This is default DB configuration to be used if not specified differently on the command line -->
+  <property name="db.configuration" value="test" />
 
-	<import file="./build_common.xml" />
-	<import file="./db_build.xml" />
+  <import file="./build_common.xml" />
+  <import file="./db_build.xml" />
 
-	<!-- Cobertura tasks, for code coverage -->
-	<taskdef classpathref="cobertura.path.id" resource="tasks.properties" />
+  <!-- Cobertura tasks, for code coverage -->
+  <taskdef classpathref="run.cobertura.path.id" resource="tasks.properties" />
 
-	<target name="init">
-		<!-- Create the time stamp -->
-		<tstamp />
-	</target>
+  <var name="global.tests.failed" value="false" />
 
-	<target name="compile-app" depends="init" description="compile the source ">
-		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${bin.app.dir}" />
-		<!-- Compile the java code from ${src} into ${build} -->
-		<javac debug="true" srcdir="${src.app.dir}" destdir="${bin.app.dir}" classpathref="lib.path.id" includeantruntime="false" />
-	</target>
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp />
+  </target>
 
-	<target name="compile-tests" depends="init, compile-app" description="compile the tests ">
-		<!-- Unit tests -->
-		<mkdir dir="${bin.test.unit.dir}" />
-		<javac debug="true" destdir="${bin.test.unit.dir}" classpathref="run.app.path.id" includeantruntime="false">
-			<src path="${src.test.unit.dir}" />
-		</javac>
+  <target name="clean" description="clean up">
+    <delete dir="${bin.dir}" />
+    <delete dir="${dist.dir}" />
+    <delete dir="${report.dir}" />
+  </target>
 
-		<!-- Component tests -->
-		<mkdir dir="${bin.test.component.dir}" />
-		<javac debug="true" destdir="${bin.test.component.dir}" classpathref="run.app.path.id" includeantruntime="false">
-			<src path="${src.test.component.dir}" />
-		</javac>
+  <target name="compile-app" depends="init" description="compile the source of the application">
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${bin.app.dir}" />
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac debug="true"
+           srcdir="${src.app.dir}"
+           destdir="${bin.app.dir}"
+           classpathref="lib.app.path.id"
+           includeantruntime="false" />
+  </target>
 
-		<!-- Functional tests -->
-		<mkdir dir="${bin.test.functional.dir}" />
-		<javac debug="true" destdir="${bin.test.functional.dir}" classpathref="run.app.path.id" includeantruntime="false">
-			<src path="${src.test.functional.dir}" />
-		</javac>
-</target>
+  <target name="compile-util" depends="init" description="compile the source of utility classes">
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${bin.util.dir}" />
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac debug="true"
+           srcdir="${src.util.dir}"
+           destdir="${bin.util.dir}"
+           classpathref="run.jetty.path.id"
+           includeantruntime="false" />
+  </target>
 
-	<target name="compile-all" depends="compile-app, compile-tests" description="Compile all the sources" />
+  <target name="compile-tests" depends="init, compile-app" description="compile the tests ">
+    <!-- Unit tests -->
+    <mkdir dir="${bin.test.unit.dir}" />
+    <javac debug="true" destdir="${bin.test.unit.dir}" classpathref="run.test.path.id" includeantruntime="false">
+      <src path="${src.test.unit.dir}" />
+    </javac>
 
-	<target name="dist" depends="create-war" description="generate the distribution">
-		<mkdir dir="${dist.dir}/${appStartupClassPath}"/>
-		<copy todir="${dist.dir}/${appStartupClassPath}" file="${bin.app.dir}/${appStartupClassPath}/${appStartupClassFileName}"/>
-	</target>
+    <!-- Component tests -->
+    <mkdir dir="${bin.test.component.dir}" />
+    <javac debug="true" destdir="${bin.test.component.dir}" classpathref="run.test.path.id" includeantruntime="false">
+      <src path="${src.test.component.dir}" />
+    </javac>
 
-	<target name="full-build" depends="run-all-tests-and-reports-with-coverage, dist" description="run full build with compilation, testing, packaging, deployment, etc...">
-	</target>
+    <!-- Functional tests -->
+    <mkdir dir="${bin.test.functional.dir}" />
+    <javac debug="true" destdir="${bin.test.functional.dir}" classpathref="run.test.path.id" includeantruntime="false">
+      <src path="${src.test.functional.dir}" />
+    </javac>
+  </target>
 
-	<target name="clean" description="clean up">
-		<delete dir="${bin.dir}" />
-		<delete dir="${dist.dir}" />
-		<delete dir="${report.dir}" />
-	</target>
+  <target name="compile-all" depends="compile-app, compile-util, compile-tests" description="Compile all the sources" />
 
-	<target name="run-tests" depends="compile-all" description="run tests for the specified folder (in parameter run.test.dir)">
-		<mkdir dir="${report.junit.dir}" />
+  <target name="dist" depends="create-war" description="generate the distribution">
+  </target>
 
-		<if>
-			<equals arg1="${run.coverage}" arg2="true" />
-			<then>
-				<path id="run.current.test.path.id">
-					<path location="${bin.instrumented.dir}" />
-					<path refid="run.test.path.id" />
-				</path>
-			</then>
-			<else>
-				<path id="run.current.test.path.id">
-					<path refid="run.test.path.id" />
-				</path>
-			</else>
-		</if>
-		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed" failureproperty="tests.failed">
-			<!--
-				Specify the name of the coverage data file to use.
-				The value specified below is the default.
-			-->
-			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.ser.file}" />
-			<classpath refid="run.current.test.path.id" />
-			<batchtest fork="yes" todir="${report.junit.dir}" unless="testcase">
-				<fileset dir="${run.test.dir}">
-					<include name="**/*Test.java" />
-				</fileset>
-			</batchtest>
-			<formatter type="plain" usefile="true" />
-			<formatter type="xml" usefile="true" />
-		</junit>
-	</target>
+  <target name="create-war" depends="compile-app" description="create WAR file with the apllication">
+    <echo message="Creating WAR for db.configuration=${db.configuration}" />
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist.war.dir}" />
 
-	<target name="run-unit-tests" depends="compile-all" description="run unit tests">
-		<antcall target="run-tests">
-			<param name="run.test.dir" value="${src.test.unit.dir}" />
-		</antcall>
-		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
-	</target>
+    <war destfile="${dist.war.dir}/librarian.war" webxml="${resources.webinf.dir}/web.xml">
+      <lib dir="${lib.app.dir}" />
+      <classes dir="${bin.app.dir}" />
+      <classes dir="${current.config.dir}/" />
+      <webinf dir="${resources.webinf.dir}">
+        <exclude name="web.xml" />
+      </webinf>
+    </war>
+  </target>
 
-	<target name="run-component-tests" depends="compile-all" description="run component tests">
-		<antcall target="run-tests">
-			<param name="run.test.dir" value="${src.test.component.dir}" />
-		</antcall>
-		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
-	</target>
+  <target name="release"
+          depends="clean, run-all-tests-and-reports-with-coverage, dist"
+          description="run clean full build with compilation, testing, packaging, deployment, etc...">
+  </target>
 
-	<target name="run-functional-tests" depends="compile-all, start-jetty-with-app" description="run component tests">
-		<antcall target="run-tests">
-			<param name="run.test.dir" value="${src.test.functional.dir}" />
-		</antcall>
-		<fail if="tests.failed and not(test.continue.on.fail)" message="Test(s) failed." />
-	</target>
+  <target name="run-all-tests-and-reports-with-coverage"
+          depends="compile-all"
+          description="run all tests and craete test report plus include coverage report">
+    <var name="test.continue.on.fail" value="true" />
+    <property name="run.coverage" value="true" />
+    <delete file="${report.cobertura.ser.file}" />
+    <antcall target="cobertura-instrument-app-classes" />
+    <antcall target="junit-run-all-test-and-reports" />
+    <antcall target="cobertura-run-coverage-report" />
+    <fail if="global.tests.failed " message="Test(s) failed." />
+  </target>
 
-	<target name="run-all-test-and-reports">
-		<delete dir="${report.junit.dir}" />
-		<antcall target="run-unit-tests" />
-		<antcall target="run-component-tests" />
-		<antcall target="run-functional-tests" />
-		<antcall target="run-test-reports" />
-	</target>
+  <target name="run-all-tests-and-reports-no-coverage"
+          depends="compile-all"
+          description="run all tests and craete test report">
+    <var name="test.continue.on.fail" value="true" />
+    <antcall target="junit-run-all-test-and-reports" />
+    <fail if="global.tests.failed " message="Test(s) failed." />
+  </target>
 
-	<target name="run-all-tests-and-reports-no-coverage" depends="compile-all" description="run all tests and craete test report">
-		<property name="test.continue.on.fail" value="true" />
-		<antcall target="run-all-test-and-reports" />
-		<fail if="tests.failed" message="Test(s) failed." />
-	</target>
+  <target name="cobertura-instrument-app-classes">
+    <!-- Prepare classes for code coverage -->
+    <delete dir="${bin.instrumented.dir}" />
+    <cobertura-instrument todir="${bin.instrumented.dir}" datafile="${report.cobertura.ser.file}">
+      <fileset dir="${bin.app.dir}">
+        <include name="**/*.class" />
+        <exclude name="**/StartApp*.class" />
+      </fileset>
+    </cobertura-instrument>
+  </target>
 
-	<target name="run-all-tests-and-reports-with-coverage" depends="compile-all" description="run all tests and craete test report plus include coverage report">
-		<property name="test.continue.on.fail" value="true" />
-		<property name="run.coverage" value="true" />
-		<delete file="${cobertura.ser.file}" />
-		<antcall target="cobertura-instrument-app-classes" />
-		<antcall target="run-all-test-and-reports" />
-		<antcall target="run-coverage-report" />
-		<fail if="tests.failed" message="Test(s) failed." />
-	</target>
+  <target name="cobertura-run-coverage-report">
+    <delete dir="${report.coverage-report.dir}" />
+    <!-- produce XML version for CI(Jenkins) -->
+    <cobertura-report datafile="${report.cobertura.ser.file}"
+                      srcdir="${src.app.dir}"
+                      destdir="${report.coverage-report.dir}"
+                      format="xml" />
+    <!-- produce HTML version for development -->
+    <cobertura-report datafile="${report.cobertura.ser.file}"
+                      srcdir="${src.app.dir}"
+                      destdir="${report.coverage-report.dir}"
+                      format="html" />
+  </target>
 
-	<target name="cobertura-instrument-app-classes">
-		<!-- Prepare classes for code coverage -->
-		<delete dir="${bin.instrumented.dir}" />
-		<cobertura-instrument todir="${bin.instrumented.dir}" datafile="${cobertura.ser.file}">
-			<fileset dir="${bin.app.dir}">
-				<include name="**/*.class" />
-				<exclude name="**/StartApp*.class" />
-			</fileset>
-		</cobertura-instrument>
-	</target>
+  <target name="junit-run-all-test-and-reports">
+    <delete dir="${report.junit.dir}" />
+    <antcall target="junit-run-unit-tests" />
+    <antcall target="junit-run-component-tests" />
+    <antcall target="junit-run-functional-tests" />
+    <antcall target="junit-run-test-reports" />
+  </target>
 
+  <target name="junit-run-unit-test-and-reports-with-coverage">
+    <delete dir="${report.junit.dir}" />
+    <antcall target="junit-run-unit-tests" />
+    <antcall target="junit-run-test-reports" />
+  </target>
 
-	<target name="run-test-reports" description="prepare test repots">
-		<delete dir="${report.junit-report.dir}" />
-		<mkdir dir="${report.junit-report.dir}" />
-		<junitreport todir="${report.junit-report.dir}">
-			<fileset dir="${report.junit.dir}">
-				<include name="TEST-*.xml" />
-				<include name="TEST-*.txt" />
-			</fileset>
-			<report format="frames" todir="${report.junit-report.dir}" />
-		</junitreport>
-	</target>
+  <target name="junit-run-unit-tests" depends="compile-all" description="run unit tests">
+    <antcall target="junit-run-tests">
+      <param name="run.test.dir" value="${src.test.unit.dir}" />
+    </antcall>
+  </target>
 
-	<target name="run-coverage-report">
-		<delete dir="${report.coverage-report.dir}" />
-		<cobertura-report datafile="${cobertura.ser.file}" srcdir="${src.app.dir}" destdir="${report.coverage-report.dir}" format="xml" />
-		<cobertura-report datafile="${cobertura.ser.file}" srcdir="${src.app.dir}" destdir="${report.coverage-report.dir}" format="html" />
-	</target>
+  <target name="junit-run-component-tests" depends="compile-all" description="run component tests">
+    <antcall target="junit-run-tests">
+      <param name="run.test.dir" value="${src.test.component.dir}" />
+    </antcall>
+  </target>
 
+  <target name="junit-run-functional-tests"
+          depends="compile-all, start-jetty-with-app"
+          description="run component tests">
+    <antcall target="junit-run-tests">
+      <param name="run.test.dir" value="${src.test.functional.dir}" />
+    </antcall>
+  </target>
 
-	<target name="create-war" depends="compile-app" description="create WAR file with the apllication">
-		<echo message="Creating WAR for db.configuration=${db.configuration}" />
-		<!-- Create the distribution directory -->
-		<mkdir dir="${dist.war.dir}" />
+  <target name="junit-run-test-reports" description="prepare test repots">
+    <delete dir="${report.junit-report.dir}" />
+    <mkdir dir="${report.junit-report.dir}" />
+    <junitreport todir="${report.junit-report.dir}">
+      <fileset dir="${report.junit.dir}">
+        <include name="TEST-*.xml" />
+        <include name="TEST-*.txt" />
+      </fileset>
+      <report format="frames" todir="${report.junit-report.dir}" />
+    </junitreport>
+  </target>
 
-		<war destfile="${dist.war.dir}/librarian.war" webxml="${webinf.dir}/web.xml">
-			<lib dir="${lib.dir}" >
-				<exclude name="jetty/*"/>
-				<exclude name="util/*"/>
-				<exclude name="jwebunit/*"/>
-			</lib>
-			<classes dir="${bin.app.dir}" />
-			<classes dir="${current.config.dir}/" />
-			<webinf dir="${webinf.dir}">
-				<exclude name="web.xml" />
-			</webinf>
-		</war>
-	</target>
+  <target name="junit-run-tests"
+          depends="compile-all"
+          description="run tests for the specified folder (in parameter run.test.dir)">
+    <mkdir dir="${report.junit.dir}" />
 
-	<target name="start-jetty-with-app" depends="dist" description="start embeded jetty instance with the built application">
-		<echo message="${toString:run.jetty.path.id}"/>
-		<forget>
-			<java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
-		</forget>
-		<waitfor maxwait="1" maxwaitunit="minute" checkevery="100" checkeveryunit="millisecond">
-			<http url="http://localhost:8080/" />
-		</waitfor>
-	</target>
+    <if>
+      <equals arg1="${run.coverage}" arg2="true" />
+      <then>
+        <path id="run.current.test.path.id">
+          <path location="${bin.instrumented.dir}" />
+          <path refid="run.test.path.id" />
+          <path refid="run.cobertura.path.id" />
+        </path>
+      </then>
+      <else>
+        <path id="run.current.test.path.id">
+          <path refid="run.test.path.id" />
+        </path>
+      </else>
+    </if>
+    <junit dir="${basedir}"
+           haltonfailure="false"
+           printsummary="yes"
+           errorProperty="tests.failed"
+           failureproperty="tests.failed">
+      <sysproperty key="net.sourceforge.cobertura.datafile" file="${report.cobertura.ser.file}" />
+      <classpath refid="run.current.test.path.id" />
+      <batchtest fork="yes" todir="${report.junit.dir}" unless="testcase">
+        <fileset dir="${run.test.dir}">
+          <include name="**/*Test.java" />
+        </fileset>
+      </batchtest>
+      <formatter type="plain" usefile="true" />
+      <formatter type="xml" usefile="true" />
+    </junit>
+    <fail message="Test(s) failed.">
+      <condition>
+        <and>
+          <isset property="tests.failed" />
+          <not>
+            <isset property="test.continue.on.fail" />
+          </not>
+        </and>
+      </condition>
+    </fail>
+  </target>
+
+  <target name="start-jetty-with-app"
+          depends="dist"
+          description="start embeded jetty instance with the built application">
+    <echo message="${toString:run.jetty.path.id}" />
+    <forget>
+      <java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
+    </forget>
+    <waitfor maxwait="1" maxwaitunit="minute" checkevery="100" checkeveryunit="millisecond">
+      <http url="http://localhost:8080/" />
+    </waitfor>
+  </target>
 
 </project>

@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="bin/app" path="src/app"/>
+	<classpathentry kind="src" output="bin/util" path="src/util"/>
 	<classpathentry kind="src" output="bin/test/functional" path="src/test/functional"/>
 	<classpathentry kind="src" output="bin/test/unit" path="src/test/unit"/>
 	<classpathentry kind="src" output="bin/test/component" path="src/test/component"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.aop-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.asm-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.aspects-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.beans-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.context-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.context.support-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.core-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.expression-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.instrument-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.instrument.tomcat-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.jdbc-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.jms-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.orm-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.oxm-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.test-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.transaction-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.web-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.web.portlet-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.web.servlet-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/org.springframework.web.struts-3.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-testing.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate3.jar"/>
-	<classpathentry kind="lib" path="lib/persistence-api-1.0.2.jar"/>
-	<classpathentry kind="lib" path="lib/transaction-api-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.6.4.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.6.4.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.18-bin.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/javassist-3.12.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/app/aopalliance.jar"/>
+	<classpathentry kind="lib" path="lib/app/cglib-nodep-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/app/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/app/commons-dbcp-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/app/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/app/commons-pool-1.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/app/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/app/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="lib/app/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib/app/javassist-3.12.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/app/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/app/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.aop-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.asm-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.aspects-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.beans-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.context-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.context.support-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.core-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.expression-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.instrument-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.instrument.tomcat-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.jdbc-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.jms-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.orm-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.oxm-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.transaction-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.web-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.web.portlet-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.web.servlet-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/org.springframework.web.struts-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/app/persistence-api-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/app/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/app/slf4j-log4j12-1.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/app/transaction-api-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/com.sun.el_2.2.0.v201105051105.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/javax.el_2.2.0.v201105051105.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/javax.servlet.jsp_2.2.0.v201103241009.jar"/>
@@ -69,6 +69,10 @@
 	<classpathentry kind="lib" path="lib/jetty/org.apache.jasper.glassfish_2.2.2.v201108011116.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/org.apache.taglibs.standard.glassfish_1.2.0.v201004190952.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/cobertura/asm-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/cobertura/asm-tree-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/cobertura/cobertura.jar"/>
+	<classpathentry kind="lib" path="lib/cobertura/jakarta-oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/commons-codec-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/commons-io-2.0.1.jar"/>
@@ -93,7 +97,8 @@
 	<classpathentry kind="lib" path="lib/jwebunit/xalan-2.7.1.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/xercesImpl-2.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/xml-apis-1.3.04.jar"/>
-	<classpathentry kind="lib" path="lib/aopalliance.jar"/>
-	<classpathentry kind="lib" path="lib/cglib-nodep-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/test/hibernate-testing.jar"/>
+	<classpathentry kind="lib" path="lib/test/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="lib/test/org.springframework.test-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
