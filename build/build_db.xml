@@ -3,7 +3,11 @@
 		Database related build tasks for librarian
 	</description>
 
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${lib.support.dir}/ant-contrib-1.0b3.jar"/>
+    </classpath>
+  </taskdef>
   <taskdef classpathref="run.dbunit.path.id" name="dbunit" classname="org.dbunit.ant.DbUnitTask" />
 
   <!-- Import common defintions -->
@@ -67,7 +71,7 @@
       <classpath>
         <pathelement id="run.dbunit.path.id" />
       </classpath>
-      <operation type="CLEAN_INSERT" src="resources/db_unit_data/books.xml" format="xml" />
+      <operation type="CLEAN_INSERT"  src="resources/db_unit_data/books.xml" format="xml" />
     </dbunit>
 
   </target>

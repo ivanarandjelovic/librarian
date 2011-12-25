@@ -14,6 +14,13 @@
   <import file="./build_cobertura.xml" />
 
 
+  <!-- Ant contrib tasks -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${lib.support.dif}/ant-contrib-1.0b3.jar"/>
+    </classpath>
+  </taskdef>
+  
   <!-- Cobertura tasks, for code coverage -->
   <taskdef classpathref="run.cobertura.path.id" resource="tasks.properties" />
 
