@@ -12,8 +12,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
@@ -22,7 +20,6 @@ import static org.springframework.test.web.ModelAndViewAssert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml", "/spring/appServlet/servlet-context.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback=true)
 public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
 
 	private MockHttpServletRequest request;
@@ -48,7 +45,6 @@ public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
 	}
 
 	@Test
-	@Transactional
 	public void testOpenNewBook() throws Exception {
 
 		request.setRequestURI("/openNewBook");
@@ -58,7 +54,6 @@ public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
 	}
 
 	@Test
-	@Transactional
 	public void testCreateNewBook() throws Exception {
 	
 		request.setRequestURI("/createNewBook");
