@@ -122,7 +122,7 @@
 
 	<target name="junit-run-unit-test-and-reports-with-coverage" description="run unit tests and create code coverage">
 		<var name="test.continue.on.fail" value="true" />
-		<property name="run.coverage" value="true" />
+	  	<property name="run.coverage" value="true" />
 		<delete file="${report.cobertura.ser.file}" />
 		<antcall target="cobertura-instrument-app-classes" />
 		<delete dir="${report.junit.dir}" />
@@ -188,7 +188,7 @@
 			failureproperty="tests.failed">
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${report.cobertura.ser.file}" />
 			<classpath refid="run.current.test.path.id" />
-			<batchtest fork="false" todir="${report.junit.dir}" unless="testcase">
+			<batchtest fork="true" todir="${report.junit.dir}" unless="testcase">
 				<fileset dir="${run.test.dir}">
 					<include name="**/*Test.java" />
 				</fileset>
@@ -219,5 +219,29 @@
 		</waitfor>
 	</target>
 
+	  <target name="cobertura-instrument-app-classes">
+	    <!-- Prepare classes for code coverage -->
+	    <delete dir="${bin.instrumented.dir}" />
+	    <cobertura-instrument todir="${bin.instrumented.dir}" datafile="${report.cobertura.ser.file}">
+	      <fileset dir="${bin.app.dir}">
+	        <include name="**/*.class" />
+	        <exclude name="**/StartApp*.class" />
+	      </fileset>
+	    </cobertura-instrument>
+	  </target>
+
+	  <target name="cobertura-run-coverage-report">
+	    <delete dir="${report.coverage-report.dir}" />
+	    <!-- produce XML version for CI(Jenkins) -->
+	    <cobertura-report datafile="${report.cobertura.ser.file}"
+	                      srcdir="${src.app.dir}"
+	                      destdir="${report.coverage-report.dir}"
+	                      format="xml" />
+	    <!-- produce HTML version for development -->
+	    <cobertura-report datafile="${report.cobertura.ser.file}"
+	                      srcdir="${src.app.dir}"
+	                      destdir="${report.coverage-report.dir}"
+	                      format="html" />
+	  </target>
 
 </project>
