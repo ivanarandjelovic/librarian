@@ -63,7 +63,6 @@
   <!-- fill the DB with data -->
   <target name="db_insert_data">
 
-    <echo message="${toString:run.dbunit.path.id}" />
     <dbunit driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.password}">
       <dbconfig>
         <property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
