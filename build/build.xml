@@ -210,7 +210,6 @@
 
 	<!-- start embeded jetty instance with the built application -->
 	<target name="start-jetty-with-app" depends="dist">
-		<echo message="${toString:run.jetty.path.id}" />
 		<forget>
 			<java fork="true" dir="${basedir}" classname="${appStartupClassName}" classpathref="run.jetty.path.id" />
 		</forget>
