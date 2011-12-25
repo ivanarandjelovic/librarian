@@ -47,22 +47,22 @@ public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
 	@Test
 	public void testOpenNewBook() throws Exception {
 
-		request.setRequestURI("/openNewBook");
+		request.setRequestURI(NewBookController.URL_OPEN_NEW_BOOK);
 		request.setMethod("GET");
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
-		assertViewName(mav, "new_book");
+		assertViewName(mav, NewBookController.VIEW_NEW_BOOK);
 	}
 
 	@Test
 	public void testCreateNewBook() throws Exception {
 	
-		request.setRequestURI("/createNewBook");
+		request.setRequestURI(NewBookController.URL_CREATE_NEW_BOOK);
 		request.setMethod("POST");
-		String title = "title "+ System.currentTimeMillis();
-		request.setParameter("title", title);
+		String title = "TEST title "+ System.currentTimeMillis();
+		request.setParameter(NewBookController.PARAM_TITLE, title);
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
-		assertViewName(mav, "new_book_created");
-		assertModelAttributeAvailable(mav, "book");		
+		assertViewName(mav, NewBookController.VIEW_NEW_BOOK_CREATED);
+		assertModelAttributeAvailable(mav, NewBookController.ATTR_BOOK);		
 	}
 
 }

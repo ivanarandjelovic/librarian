@@ -47,12 +47,24 @@ public class HomeControllerCTest extends AbstractJUnit4SpringContextTests {
 	@Test
 	public void testHome() throws Exception {
 
-		request.setRequestURI("/");
+		request.setRequestURI(HomeController.URL_ROOT);
 		request.setMethod("GET");
 		final ModelAndView mav = handlerAdapter.handle(request, response, homeController);
-		assertViewName(mav, "home");
-		assertModelAttributeAvailable(mav, "books");
-		assertModelAttributeAvailable(mav, "serverTime");
+		assertViewName(mav, HomeController.VIEW_HOME);
+		assertModelAttributeAvailable(mav, HomeController.ATTR_BOOKS);
+		assertModelAttributeAvailable(mav, HomeController.ATTR_SERVER_TIME);
+
+	}
+
+	@Test
+	public void testHomeLongerURL() throws Exception {
+
+		request.setRequestURI(HomeController.URL_HOME);
+		request.setMethod("GET");
+		final ModelAndView mav = handlerAdapter.handle(request, response, homeController);
+		assertViewName(mav, HomeController.VIEW_HOME);
+		assertModelAttributeAvailable(mav, HomeController.ATTR_BOOKS);
+		assertModelAttributeAvailable(mav, HomeController.ATTR_SERVER_TIME);
 
 	}
 

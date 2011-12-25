@@ -12,6 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NewBookController {
 
+	public static final String URL_OPEN_NEW_BOOK = "/openNewBook";
+	public static final String URL_CREATE_NEW_BOOK = "/createNewBook";
+
+	public static final String VIEW_NEW_BOOK_CREATED = "new_book_created";
+	public static final String VIEW_NEW_BOOK = "new_book";
+
+	public static final String ATTR_BOOK = "book";
+
+	public static final String PARAM_TITLE = "title";
+
 	BookService bookService;
 
 	@Autowired
@@ -20,16 +30,16 @@ public class NewBookController {
 		this.bookService = bookService;
 	}
 
-	@RequestMapping(value = "/createNewBook", method = RequestMethod.POST)
-	public String createNewBook(@RequestParam("title") String title, Model model) {
+	@RequestMapping(value = URL_CREATE_NEW_BOOK, method = RequestMethod.POST)
+	public String createNewBook(@RequestParam(PARAM_TITLE) String title, Model model) {
 		Book book = bookService.createBook(title);
-		model.addAttribute("book", book);
-		return "new_book_created";
+		model.addAttribute(ATTR_BOOK, book);
+		return VIEW_NEW_BOOK_CREATED;
 	}
 	
-	@RequestMapping(value = "/openNewBook", method = RequestMethod.GET)
+	@RequestMapping(value = URL_OPEN_NEW_BOOK, method = RequestMethod.GET)
 	public String openNewBook() {
-		return "new_book";
+		return VIEW_NEW_BOOK;
 	}
 	
 	
