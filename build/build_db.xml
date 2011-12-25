@@ -69,7 +69,7 @@
         <property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
       </dbconfig>
       <classpath>
-        <pathelement id="run.dbunit.path.id" />
+        <pathelement location="${lib.app.dir}/${lib.db.driver.jar}" />
       </classpath>
       <operation type="CLEAN_INSERT"  src="resources/db_unit_data/books.xml" format="xml" />
     </dbunit>

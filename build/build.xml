@@ -113,7 +113,7 @@
 
 	<target name="junit-run-all-test-and-reports">
 		<delete dir="${report.junit.dir}" />
-<!--	  	<antcall target="db_insert_data" /> -->
+	  	<antcall target="db_insert_data" />
 		<antcall target="junit-run-unit-tests" />
 		<antcall target="junit-run-component-tests" />
 		<antcall target="junit-run-functional-tests" />
