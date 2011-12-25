@@ -18,6 +18,11 @@
 		<path location="${current.config.dir}/" />
 		<path location="${resources.webinf.dir}" />
 	</path>
+	<path id="run.dbunit.path.id">
+		<path refid="run.app.path.id" />
+		<fileset dir="${lib.test.dir}" />
+		<path location="${bin.test.functional.dir}" />
+	</path>
 	<path id="run.test.path.id">
 		<path refid="run.app.path.id" />
 		<fileset dir="${lib.test.dir}" />

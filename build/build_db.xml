@@ -4,6 +4,7 @@
 	</description>
 
   <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+  <taskdef classpathref="run.dbunit.path.id" name="dbunit" classname="org.dbunit.ant.DbUnitTask" />
 
   <!-- Import common defintions -->
   <import file="./build_common.xml" />
@@ -16,7 +17,7 @@
 
   <!-- create user, intended to be run manually, only once -->
   <target name="db_create_user">
-    <sql driver="com.mysql.jdbc.Driver"
+    <sql driver="${db.driver}"
          url="${db.root.url}"
          classpathref="run.app.path.id"
          userid="${db.root.user}"
@@ -26,7 +27,7 @@
 
   <!-- drop user, intended to be run manually, only when needed -->
   <target name="db_drop_user">
-    <sql driver="com.mysql.jdbc.Driver"
+    <sql driver="${db.driver}"
          url="${db.root.url}"
          classpathref="run.app.path.id"
          userid="${db.root.user}"
@@ -36,7 +37,7 @@
 
   <!-- drop database -->
   <target name="db_drop_database">
-    <sql driver="com.mysql.jdbc.Driver"
+    <sql driver="${db.driver}"
          url="${db.root.url}"
          classpathref="run.app.path.id"
          userid="${db.root.user}"
@@ -47,12 +48,28 @@
 
   <!-- create database, expects that DB user already exists -->
   <target name="db_create_database">
-    <sql driver="com.mysql.jdbc.Driver"
+    <sql driver="${db.driver}"
          url="${db.root.url}"
          classpathref="run.app.path.id"
          userid="${db.root.user}"
          password="${db.root.password}"
          src="${db.dir}/create_database.sql" />
+  </target>
+
+  <!-- fill the DB with data -->
+  <target name="db_insert_data">
+
+    <echo message="${toString:run.dbunit.path.id}" />
+    <dbunit driver="${db.driver}" url="${db.url}" userid="${db.user}" password="${db.password}">
+      <dbconfig>
+        <property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
+      </dbconfig>
+      <classpath>
+        <pathelement id="run.dbunit.path.id" />
+      </classpath>
+      <operation type="CLEAN_INSERT" src="resources/db_unit_data/books.xml" format="xml" />
+    </dbunit>
+
   </target>
 
 
@@ -67,7 +84,7 @@
 
     <ac:for param="file" list="${table-files}" delimiter="${line.separator}">
       <sequential>
-        <sql driver="com.mysql.jdbc.Driver"
+        <sql driver="${db.driver}"
              url="${db.url}"
              classpathref="run.app.path.id"
              userid="${db.user}"

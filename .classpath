@@ -87,7 +87,6 @@
 	<classpathentry kind="lib" path="lib/jwebunit/jwebunit-core-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/jwebunit-htmlunit-plugin-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/logback-classic-0.9.29.jar"/>
-	<classpathentry kind="lib" path="lib/jwebunit/logback-core-0.9.29.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/nekohtml-1.9.15.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/regexp-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/jwebunit/sac-1.3.jar"/>
