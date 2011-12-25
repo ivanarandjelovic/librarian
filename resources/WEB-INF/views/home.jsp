@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
 <html>
 <head>
 <title>Librarian Home Page</title>
@@ -7,6 +6,9 @@
 <body>
 	<h1>Hello world! I am Librarian!</h1>
 
+	<p>
+		<a id="openNewBook" href="/openNewBook">Create New Book</a>
+		
 	<P>The time on the server is ${serverTime}.</P>
 	<p>Books:</p>
 	<table>

@@ -99,5 +99,6 @@
 	<classpathentry kind="lib" path="lib/test/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="lib/test/org.springframework.test-3.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/test/dbunit-2.4.8.jar"/>
+	<classpathentry kind="lib" path="resources/WEB-INF"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

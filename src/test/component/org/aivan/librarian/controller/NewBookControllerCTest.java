@@ -12,6 +12,8 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
@@ -20,13 +22,14 @@ import static org.springframework.test.web.ModelAndViewAssert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml", "/spring/appServlet/servlet-context.xml" })
-public class HomeControllerCTest extends AbstractJUnit4SpringContextTests {
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback=true)
+public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
 
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
 	private HandlerAdapter handlerAdapter;
 	@Autowired
-	private HomeController homeController;
+	private NewBookController newBookController;
 
 	@Before
 	public void setUp() throws Exception {
@@ -40,20 +43,31 @@ public class HomeControllerCTest extends AbstractJUnit4SpringContextTests {
 	}
 
 	@Test
-	public void testHomeControllerPresent() {
-		assertNotNull("HomeController not present", homeController);
+	public void testNewBookControllerPresent() {
+		assertNotNull("NewBookController not present", newBookController);
 	}
 
 	@Test
-	public void testHome() throws Exception {
+	@Transactional
+	public void testOpenNewBook() throws Exception {
 
-		request.setRequestURI("/");
+		request.setRequestURI("/openNewBook");
 		request.setMethod("GET");
-		final ModelAndView mav = handlerAdapter.handle(request, response, homeController);
-		assertViewName(mav, "home");
-		assertModelAttributeAvailable(mav, "books");
-		assertModelAttributeAvailable(mav, "serverTime");
+		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
+		assertViewName(mav, "new_book");
+	}
 
+	@Test
+	@Transactional
+	public void testCreateNewBook() throws Exception {
+	
+		request.setRequestURI("/createNewBook");
+		request.setMethod("POST");
+		String title = "title "+ System.currentTimeMillis();
+		request.setParameter("title", title);
+		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
+		assertViewName(mav, "new_book_created");
+		assertModelAttributeAvailable(mav, "book");		
 	}
 
 }

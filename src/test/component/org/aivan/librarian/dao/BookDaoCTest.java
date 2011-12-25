@@ -49,6 +49,9 @@ public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests 
 		newBook.setTitle("book title 1");
 		bookDao.createBook(newBook);
 		assert (newBook.getId() != 0);
+		Book book = bookDao.getBook(newBook.getId());
+		assert(book.getId() == newBook.getId());
+		assertEquals("Book title is not identical", newBook.getTitle(), book.getTitle());
 	}
 
 }

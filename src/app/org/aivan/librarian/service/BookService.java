@@ -31,4 +31,11 @@ public class BookService {
 		return bookDao.getBook(id);
 	}
 
+	public Book createBook(String title) {
+		Book book = new Book();
+		book.setTitle(title);
+		bookDao.createBook(book);
+		return book;
+	}
+
 }

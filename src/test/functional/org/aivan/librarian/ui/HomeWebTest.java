@@ -1,13 +1,10 @@
 package org.aivan.librarian.ui;
 
-import net.sourceforge.jwebunit.exception.TestingEngineResponseException;
-
 import org.junit.*;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
-import static org.junit.Assert.*;
 
-public class ExampleWebTest {
+public class HomeWebTest {
 
 	@Before
 	public void prepare() {
@@ -27,15 +24,4 @@ public class ExampleWebTest {
 		 */
 	}
 
-	@Test
-	public void testInvalidPage() {
-		try {
-			beginAt("/___zzz___");
-			fail("this was invalid URL, should have failed!");
-		} catch (TestingEngineResponseException e) {
-			// TODO: handle exception
-			assertTrue("Status code should be 404", e.getMessage().contains("404"));
-			assert (true);
-		}
-	}
 }
