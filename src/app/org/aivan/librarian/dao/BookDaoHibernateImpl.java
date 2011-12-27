@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookDaoHibernateImpl implements BookDao {
 
-	private HibernateTemplate hibernateTemplate;
+	transient private HibernateTemplate hibernateTemplate;
 
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -25,8 +25,7 @@ public class BookDaoHibernateImpl implements BookDao {
 	}
     
 	public Book getBook(Long Id) {
-		Book book = (Book) hibernateTemplate.load(Book.class, Id);
-		return book;
+		return hibernateTemplate.load(Book.class, Id);
 	}
 
 	@Override

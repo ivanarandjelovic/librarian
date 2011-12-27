@@ -3,15 +3,15 @@
 		Database related build tasks for librarian
 	</description>
 
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+  <!-- Import common defintions -->
+  <import file="./build_common.xml" />
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
     <classpath>
       <pathelement location="${lib.support.dir}/ant-contrib-1.0b3.jar"/>
     </classpath>
   </taskdef>
   <taskdef classpathref="run.dbunit.path.id" name="dbunit" classname="org.dbunit.ant.DbUnitTask" />
-
-  <!-- Import common defintions -->
-  <import file="./build_common.xml" />
 
   <!-- set global properties for this build -->
   <property file="${build.dir}/build.properties" />
