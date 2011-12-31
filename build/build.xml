@@ -1,4 +1,4 @@
-<project name="librarian" default="dist" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="librarian" default="release" basedir=".." xmlns:ivy="antlib:org.apache.ivy.ant">
   <description>
         Main build file for librarian
     </description>
