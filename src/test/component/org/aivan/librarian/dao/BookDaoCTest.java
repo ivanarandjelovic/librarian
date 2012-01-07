@@ -3,7 +3,6 @@ package org.aivan.librarian.dao;
 import static org.junit.Assert.*;
 
 import org.aivan.librarian.dao.entity.Book;
-import org.hibernate.ObjectNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
