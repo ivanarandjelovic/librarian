@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
@@ -20,13 +21,14 @@ import static org.springframework.test.web.ModelAndViewAssert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml", "/spring/appServlet/servlet-context.xml" })
-public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback=true)
+public class BookControllerCTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
 	private HandlerAdapter handlerAdapter;
 	@Autowired
-	private NewBookController newBookController;
+	private BookController newBookController;
 
 	@Before
 	public void setUp() throws Exception {
@@ -47,22 +49,48 @@ public class NewBookControllerCTest extends AbstractJUnit4SpringContextTests {
 	@Test
 	public void testOpenNewBook() throws Exception {
 
-		request.setRequestURI(NewBookController.URL_OPEN_NEW_BOOK);
+		request.setRequestURI(BookController.URL_OPEN_NEW_BOOK);
 		request.setMethod("GET");
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
-		assertViewName(mav, NewBookController.VIEW_NEW_BOOK);
+		assertViewName(mav, BookController.VIEW_NEW_BOOK);
 	}
 
 	@Test
 	public void testCreateNewBook() throws Exception {
 	
-		request.setRequestURI(NewBookController.URL_CREATE_NEW_BOOK);
+		request.setRequestURI(BookController.URL_CREATE_NEW_BOOK);
 		request.setMethod("POST");
 		String title = "TEST title "+ System.currentTimeMillis();
-		request.setParameter(NewBookController.PARAM_TITLE, title);
+		request.setParameter(BookController.PARAM_TITLE, title);
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
-		assertViewName(mav, NewBookController.VIEW_NEW_BOOK_CREATED);
-		assertModelAttributeAvailable(mav, NewBookController.ATTR_BOOK);		
+		assertViewName(mav, BookController.VIEW_NEW_BOOK_CREATED);
+		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);		
+	}
+
+	@Test
+	public void testEditBook() throws Exception {
+
+		request.setRequestURI(BookController.URL_EDIT_BOOK);
+		request.setMethod("GET");
+		request.addParameter("id", "1");
+		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
+		assertViewName(mav, BookController.VIEW_EDIT_BOOK);
+		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);		
+	}
+
+	@Test
+	public void testEditBookDone() throws Exception {
+		
+		String newTestBookTitle = "test book title "+System.currentTimeMillis();
+		
+		request.setRequestURI(BookController.URL_EDIT_BOOK);
+		request.setMethod("POST");
+		request.addParameter("id", "1");
+		request.addParameter("title", newTestBookTitle);
+		request.addParameter("saveButton", "Save");
+		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
+		assertViewName(mav, BookController.VIEW_EDIT_BOOK_DONE);
+		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);	
 	}
 
 }

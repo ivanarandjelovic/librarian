@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/root-context.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback=true)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private static final int NON_EXISTING_BOOK_ID = -1;
-	
+
 	@Autowired
 	private BookDao bookDao;
 
@@ -31,14 +31,8 @@ public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests 
 	@Test
 	@Transactional
 	public void testNonexistingBook() {
-		try {
-			Book book = bookDao.getBook(new Long(NON_EXISTING_BOOK_ID));
-			book.getId();
-			fail("Object should  have not been found!");
-		} catch (ObjectNotFoundException onf) {
-			// This is what we expect
-			assert(true);
-		}
+		Book book = bookDao.getBook(new Long(NON_EXISTING_BOOK_ID));
+		assertNull("Book expected to be null", book);
 	}
 
 	@Test
@@ -50,8 +44,25 @@ public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests 
 		bookDao.createBook(newBook);
 		assert (newBook.getId() != 0);
 		Book book = bookDao.getBook(newBook.getId());
-		assert(book.getId() == newBook.getId());
+		assert (book.getId() == newBook.getId());
 		assertEquals("Book title is not identical", newBook.getTitle(), book.getTitle());
+	}
+
+	@Test
+	@Transactional
+	public void testUpdateBook() {
+
+		String testTitle = "testTitle" + System.currentTimeMillis();
+
+		Book newBook = new Book();
+		newBook.setTitle("book title 1");
+		bookDao.createBook(newBook);
+
+		Book book = bookDao.getBook(newBook.getId());
+		book.setTitle(testTitle);
+		bookDao.updateBook(book);
+
+		assertEquals("Update book Title is not correct", testTitle, book.getTitle());
 	}
 
 }

@@ -45,4 +45,18 @@ public class BookServiceUTest {
 
 	}
 
+	@Test
+	public void testSaveBook() {
+		
+		String testTitle = "testTitle"+System.currentTimeMillis();
+		
+		Long id = UnitTestData.testBooks[0].getId();
+		Book book = bookService.getBook(id);
+		book.setTitle(testTitle);
+		bookService.updateBook(book);
+		book = bookService.getBook(id);
+		assertEquals("Book title is not correct after update", testTitle, book.getTitle());
+
+	}
+
 }

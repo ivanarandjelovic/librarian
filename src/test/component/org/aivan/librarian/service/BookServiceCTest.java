@@ -50,4 +50,18 @@ public class BookServiceCTest {
 		assertEquals("Known book Title is not correct", KNOWN_BOOK_TITLE, book.getTitle());
 	}
 
+	//@Test
+	@Transactional
+	public void testUpdateBook() {
+		
+		String testTitle = "testTitle"+System.currentTimeMillis();
+
+		Book book = bookService.getBook(KNOWN_BOOK_ID);
+		book.setTitle(testTitle);
+		bookService.updateBook(book);
+
+		book = bookService.getBook(KNOWN_BOOK_ID);
+		assertEquals("Update book Title is not correct", testTitle, book.getTitle());
+	}
+
 }

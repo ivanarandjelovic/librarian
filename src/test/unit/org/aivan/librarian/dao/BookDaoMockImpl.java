@@ -28,7 +28,7 @@ public class BookDaoMockImpl implements BookDao {
 	@Override
 	public void createBook(Book book) {
 		book.setId(new Long(++counter));
-		books.put(book.getId(), book);
+		updateBook(book);
 	}
 
 	@Override
@@ -41,4 +41,10 @@ public class BookDaoMockImpl implements BookDao {
 		return new ArrayList<Book>(books.values());
 	}
 
+	@Override
+	public void updateBook(Book book) {
+		books.put(book.getId(), book);
+	}
+
+	
 }

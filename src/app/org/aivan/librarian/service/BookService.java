@@ -38,4 +38,9 @@ public class BookService {
 		return book;
 	}
 
+	public Book updateBook(Book book) {
+		bookDao.updateBook(book);
+		return book;
+	}
+
 }

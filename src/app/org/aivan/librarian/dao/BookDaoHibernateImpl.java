@@ -25,12 +25,19 @@ public class BookDaoHibernateImpl implements BookDao {
 	}
     
 	public Book getBook(Long Id) {
-		return hibernateTemplate.load(Book.class, Id);
+		return hibernateTemplate.get(Book.class, Id);
 	}
 
 	@Override
 	public List<Book> getAllBooks() {
 		 return hibernateTemplate.loadAll(Book.class);
 	}
+
+	@Override
+	public void updateBook(Book book) {
+		 hibernateTemplate.update(book);
+	}
+	
+	
 
 }

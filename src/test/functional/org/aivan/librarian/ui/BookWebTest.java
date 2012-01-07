@@ -4,7 +4,7 @@ import org.junit.*;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-public class NewBookWebTest {
+public class BookWebTest {
 
 	@Before
 	public void prepare() {
@@ -20,6 +20,20 @@ public class NewBookWebTest {
 		setTextField("title", title);
 		clickButton("createNewBookButton");
 		assertTitleEquals("Librarian - New Book Created");
+		clickLink("homeLink");
+		assertTitleEquals("Librarian Home Page");
+		
+	}
+
+	@Test
+	public void testEditBook() {
+		beginAt("/");
+		clickLink("editBookLink_1");
+		assertTitleEquals("Librarian - Edit Book");
+		String newTitle="new book" + System.currentTimeMillis();
+		setTextField("title", newTitle);
+		clickButton("saveButton");
+		assertTitleEquals("Librarian - Book edited");
 		clickLink("homeLink");
 		assertTitleEquals("Librarian Home Page");
 		

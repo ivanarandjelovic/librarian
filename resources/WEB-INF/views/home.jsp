@@ -19,7 +19,7 @@
 		<c:forEach var="book" items="${books}">
 			<tr>
 				<td>${book.id}</td>
-				<td>${book.title}</td>
+				<td><a id="editBookLink_${book.id}" href="/editBook?id=${book.id}">${book.title}</a></td>
 			</tr>
 		</c:forEach>
 	</table>
