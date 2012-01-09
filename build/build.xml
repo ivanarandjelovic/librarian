@@ -77,10 +77,11 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist.war.dir}" />
 
-    <war destfile="${dist.war.dir}/librarian.war" webxml="${resources.webinf.dir}/web.xml">
+    <war basedir="${resources.dir}" includes="static/**" destfile="${dist.war.dir}/librarian.war" webxml="${resources.webinf.dir}/web.xml">
       <lib dir="${lib.app.dir}" />
       <classes dir="${bin.app.dir}" />
       <classes dir="${current.config.dir}/" />
+      <classes dir="${resources.classes.dir}/" />
       <webinf dir="${resources.webinf.dir}">
         <exclude name="web.xml" />
       </webinf>
@@ -184,11 +185,11 @@
 				</path>
 			</else>
 		</if>
-		<junit dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed"
+		<junit fork="true" forkMode="perBatch" dir="${basedir}" haltonfailure="false" printsummary="yes" errorProperty="tests.failed"
 			failureproperty="tests.failed">
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${report.cobertura.ser.file}" />
 			<classpath refid="run.current.test.path.id" />
-			<batchtest fork="true" todir="${report.junit.dir}" unless="testcase">
+			<batchtest todir="${report.junit.dir}" unless="testcase">
 				<fileset dir="${run.test.dir}">
 					<include name="**/*Test.java" />
 				</fileset>

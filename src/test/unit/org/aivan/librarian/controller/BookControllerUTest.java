@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 
 public class BookControllerUTest {
 
@@ -63,16 +64,23 @@ public class BookControllerUTest {
 
 	@Test
 	public void testEditBookDone() {
-		Model model = new ExtendedModelMap();
 		
 		String newTestBookTitle = "test book title "+System.currentTimeMillis();
-		String view = bookController.saveBook(UnitTestData.testBooks[0].getId(), newTestBookTitle, model);
+		UnitTestData.testBooks[0].setTitle(newTestBookTitle);
+		BindException binding = new BindException(UnitTestData.testBooks[0],"book");
+		String view = bookController.saveBook(UnitTestData.testBooks[0], binding);
+		assertFalse("Binding should have no errors",binding.hasErrors());
 		assertEquals("edit book done view is wrong", "edit_book_done", view);
-		assertTrue("model does not contain new book object", model.containsAttribute("book"));
-		assertTrue(model.asMap().get("book") instanceof Book);
-		Book book = (Book) model.asMap().get("book");
-		assertEquals("book title is wrong", newTestBookTitle, book.getTitle());
-		assertTrue("book id is zero or null", book.getId() != 0 && book.getId() != null);
+	}
+
+	@Test
+	public void testEditBookEmptyTitleDone() {
+		String newTestBookTitle = "";
+		UnitTestData.testBooks[0].setTitle(newTestBookTitle);
+		BindException binding = new BindException(UnitTestData.testBooks[0],"book");
+		String view = bookController.saveBook(UnitTestData.testBooks[0], binding);
+		assertTrue("Binding should have error!",binding.hasErrors());
+		assertEquals("edit book with error should return view for editing again", "edit_book", view);
 	}
 
 }

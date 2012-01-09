@@ -23,5 +23,11 @@
 	
 	<context:component-scan base-package="org.aivan.librarian.controller" />
 	
+	<beans:bean id="messageSource"
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <beans:property name="basename" value = "messages" />
+    </beans:bean>
 	
+	<resources mapping="/static/**" location="/static/"/>
+
 </beans:beans>

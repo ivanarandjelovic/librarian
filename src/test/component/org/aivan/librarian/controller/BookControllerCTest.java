@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
@@ -91,6 +92,23 @@ public class BookControllerCTest extends AbstractTransactionalJUnit4SpringContex
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
 		assertViewName(mav, BookController.VIEW_EDIT_BOOK_DONE);
 		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);	
+	}
+
+	@Test
+	public void testEditBookEmptyTitleDone() throws Exception {
+		
+		String newTestBookTitle = "";
+		
+		request.setRequestURI(BookController.URL_EDIT_BOOK);
+		request.setMethod("POST");
+		request.addParameter("id", "1");
+		request.addParameter("title", newTestBookTitle);
+		request.addParameter("saveButton", "Save");
+		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
+		assertViewName(mav, BookController.VIEW_EDIT_BOOK);
+		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);
+		final BindingResult errors = assertAndReturnModelAttributeOfType(mav,"org.springframework.validation.BindingResult.book",BindingResult.class);
+		assertTrue("There should be binding error for empty title",errors.hasErrors());
 	}
 
 }

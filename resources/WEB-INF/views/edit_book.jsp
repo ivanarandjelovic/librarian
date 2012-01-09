@@ -1,25 +1,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
 <title>Librarian - Edit Book</title>
+<link rel="stylesheet" type="text/css" href="/static/styles.css" />
 </head>
 <body>
 	<h1>Edit Book</h1>
 
-	<form action="/editBook" method="POST">
-	<input type="hidden" id="id" name="id" value="${book.id}"/>
+<form:form  commandName="book">
+	<form:hidden path="id"/>
 		<table>
 			<tr>
 				<td>Title</td>
-				<td><input id="title" name="title" type="text" size="100" value="${book.title}"/>
+				<td><form:input path="title" size="50"/>
+					 <form:errors  path="title" commandName="book" cssClass="formInputError"/>
 				</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><input id="saveButton" name="saveButton" type="submit" value="Save">
+				<td><input id="saveButton" name="saveButton" type="submit" value="Save"/>
 				</td>
 			</tr>
 		</table>
-	</form>
+</form:form>
 </body>
 </html>

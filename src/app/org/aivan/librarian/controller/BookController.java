@@ -1,10 +1,13 @@
 package org.aivan.librarian.controller;
 
 import org.aivan.librarian.dao.entity.Book;
+import org.aivan.librarian.dao.entity.BookValidator;
 import org.aivan.librarian.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,29 +41,39 @@ public class BookController {
 	public String openNewBook() {
 		return VIEW_NEW_BOOK;
 	}
-	
+
 	@RequestMapping(value = URL_CREATE_NEW_BOOK, method = RequestMethod.POST)
 	public String createNewBook(@RequestParam(PARAM_TITLE) String title, Model model) {
 		Book book = bookService.createBook(title);
 		model.addAttribute(ATTR_BOOK, book);
 		return VIEW_NEW_BOOK_CREATED;
 	}
-	
+
 	@RequestMapping(value = URL_EDIT_BOOK)
 	public String editBook(@RequestParam(PARAM_ID) Long id, Model model) {
 		Book book = bookService.getBook(id);
 		model.addAttribute(ATTR_BOOK, book);
 		return VIEW_EDIT_BOOK;
 	}
-	
-	@RequestMapping(value = URL_EDIT_BOOK, params="saveButton")
-	public String saveBook(@RequestParam(PARAM_ID) Long id, @RequestParam(PARAM_TITLE) String title, Model model) {
-		Book book = bookService.getBook(id);
-		book.setTitle(title);
-		bookService.updateBook(book);
-		model.addAttribute(ATTR_BOOK, book);
-		return VIEW_EDIT_BOOK_DONE;
+
+	/*
+	 * @RequestMapping(value = URL_EDIT_BOOK, params="saveButton") public String
+	 * saveBook(@RequestParam(PARAM_ID) Long id, @RequestParam(PARAM_TITLE)
+	 * String title, Model model) { Book book = bookService.getBook(id);
+	 * book.setTitle(title); bookService.updateBook(book);
+	 * model.addAttribute(ATTR_BOOK, book); return VIEW_EDIT_BOOK_DONE; }
+	 */
+	@RequestMapping(value = URL_EDIT_BOOK, params = "saveButton")
+	public String saveBook(@ModelAttribute Book book, BindingResult result) {
+		BookValidator bookValidator = new BookValidator();
+		bookValidator.validate(book, result);
+		if (result.hasErrors()) {
+			return VIEW_EDIT_BOOK;
+		} else {
+			bookService.updateBook(book);
+			// model.addAttribute(ATTR_BOOK, book);
+			return VIEW_EDIT_BOOK_DONE;
+		}
 	}
-	
-	
+
 }

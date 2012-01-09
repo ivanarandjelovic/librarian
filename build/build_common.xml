@@ -17,6 +17,7 @@
 		<path location="${bin.app.dir}" />
 		<path location="${current.config.dir}/" />
 		<path location="${resources.webinf.dir}" />
+		<path location="${resources.classes.dir}" />
 	</path>
 	<path id="run.dbunit.path.id">
 		<path refid="run.app.path.id" />
