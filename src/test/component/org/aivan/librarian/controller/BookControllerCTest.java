@@ -59,13 +59,29 @@ public class BookControllerCTest extends AbstractTransactionalJUnit4SpringContex
 	@Test
 	public void testCreateNewBook() throws Exception {
 	
-		request.setRequestURI(BookController.URL_CREATE_NEW_BOOK);
+		request.setRequestURI(BookController.URL_OPEN_NEW_BOOK);
 		request.setMethod("POST");
 		String title = "TEST title "+ System.currentTimeMillis();
 		request.setParameter(BookController.PARAM_TITLE, title);
+		request.setParameter(BookController.PARAM_CREATE_BUTTON, "Create");
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
 		assertViewName(mav, BookController.VIEW_NEW_BOOK_CREATED);
 		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);		
+	}
+
+	@Test
+	public void testCreateNewBookEmptyTitle() throws Exception {
+	
+		request.setRequestURI(BookController.URL_OPEN_NEW_BOOK);
+		request.setMethod("POST");
+		String title = "";
+		request.setParameter(BookController.PARAM_TITLE, title);
+		request.setParameter(BookController.PARAM_CREATE_BUTTON, "Create");
+		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
+		assertViewName(mav, BookController.VIEW_NEW_BOOK);
+		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);		
+		final BindingResult errors = assertAndReturnModelAttributeOfType(mav,"org.springframework.validation.BindingResult.book",BindingResult.class);
+		assertTrue("There should be binding error for empty title",errors.hasErrors());
 	}
 
 	@Test
@@ -86,9 +102,9 @@ public class BookControllerCTest extends AbstractTransactionalJUnit4SpringContex
 		
 		request.setRequestURI(BookController.URL_EDIT_BOOK);
 		request.setMethod("POST");
-		request.addParameter("id", "1");
-		request.addParameter("title", newTestBookTitle);
-		request.addParameter("saveButton", "Save");
+		request.addParameter(BookController.PARAM_ID, "1");
+		request.addParameter(BookController.PARAM_TITLE, newTestBookTitle);
+		request.addParameter(BookController.PARAM_SAVE_BUTTON, "Save");
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
 		assertViewName(mav, BookController.VIEW_EDIT_BOOK_DONE);
 		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);	
@@ -101,9 +117,9 @@ public class BookControllerCTest extends AbstractTransactionalJUnit4SpringContex
 		
 		request.setRequestURI(BookController.URL_EDIT_BOOK);
 		request.setMethod("POST");
-		request.addParameter("id", "1");
-		request.addParameter("title", newTestBookTitle);
-		request.addParameter("saveButton", "Save");
+		request.addParameter(BookController.PARAM_ID, "1");
+		request.addParameter(BookController.PARAM_TITLE, newTestBookTitle);
+		request.addParameter(BookController.PARAM_SAVE_BUTTON, "Save");
 		final ModelAndView mav = handlerAdapter.handle(request, response, newBookController);
 		assertViewName(mav, BookController.VIEW_EDIT_BOOK);
 		assertModelAttributeAvailable(mav, BookController.ATTR_BOOK);

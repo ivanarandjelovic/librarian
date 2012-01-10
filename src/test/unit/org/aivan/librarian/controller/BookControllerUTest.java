@@ -38,21 +38,39 @@ public class BookControllerUTest {
 
 	@Test
 	public void testOpenNewBook() {
-		String view = bookController.openNewBook();
+		Book book = new Book();
+		BindException binding = new BindException(book, "book");
+
+		String view = bookController.openNewBook(book, binding);
+
 		assertEquals("new book opening page/view  is wrong", "new_book", view);
 	}
 
 	@Test
 	public void testCreateNewBook() {
-		Model model = new ExtendedModelMap();
-		String bookTitle = "test book title "+System.currentTimeMillis();
-		String view = bookController.createNewBook(bookTitle, model);
+		Book book = UnitTestData.testBooks[0];
+		BindException binding = new BindException(book, "book");
+
+		String view = bookController.createNewBook(book, binding);
+
+		assertFalse("Binding should have no errors", binding.hasErrors());
 		assertEquals("new book creation view is wrong", "new_book_created", view);
-		assertTrue("model does not contain new book object", model.containsAttribute("book"));
-		assertTrue(model.asMap().get("book") instanceof Book);
-		Book book = (Book) model.asMap().get("book");
-		assertEquals("book title is wrong", bookTitle, book.getTitle());
 		assertTrue("book id is zero or null", book.getId() != 0 && book.getId() != null);
+	}
+
+	@Test
+	public void testCreateNewBookEmptyTitle() {
+		Book book = UnitTestData.testBooks[0];
+		book.setId(null);
+		book.setTitle("");
+
+		BindException binding = new BindException(book, "book");
+
+		String view = bookController.createNewBook(book, binding);
+
+		assertTrue("Binding should have error(s)", binding.hasErrors());
+		assertEquals("new book creation view is wrong after error", "new_book", view);
+		assertTrue("book id should be null", book.getId() == null);
 	}
 
 	@Test
@@ -64,12 +82,12 @@ public class BookControllerUTest {
 
 	@Test
 	public void testEditBookDone() {
-		
-		String newTestBookTitle = "test book title "+System.currentTimeMillis();
+
+		String newTestBookTitle = "test book title " + System.currentTimeMillis();
 		UnitTestData.testBooks[0].setTitle(newTestBookTitle);
-		BindException binding = new BindException(UnitTestData.testBooks[0],"book");
+		BindException binding = new BindException(UnitTestData.testBooks[0], "book");
 		String view = bookController.saveBook(UnitTestData.testBooks[0], binding);
-		assertFalse("Binding should have no errors",binding.hasErrors());
+		assertFalse("Binding should have no errors", binding.hasErrors());
 		assertEquals("edit book done view is wrong", "edit_book_done", view);
 	}
 
@@ -77,9 +95,9 @@ public class BookControllerUTest {
 	public void testEditBookEmptyTitleDone() {
 		String newTestBookTitle = "";
 		UnitTestData.testBooks[0].setTitle(newTestBookTitle);
-		BindException binding = new BindException(UnitTestData.testBooks[0],"book");
+		BindException binding = new BindException(UnitTestData.testBooks[0], "book");
 		String view = bookController.saveBook(UnitTestData.testBooks[0], binding);
-		assertTrue("Binding should have error!",binding.hasErrors());
+		assertTrue("Binding should have error!", binding.hasErrors());
 		assertEquals("edit book with error should return view for editing again", "edit_book", view);
 	}
 

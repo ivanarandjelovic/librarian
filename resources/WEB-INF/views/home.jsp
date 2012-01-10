@@ -7,7 +7,7 @@
 	<h1>Hello world! I am Librarian!</h1>
 
 	<p>
-		<a id="openNewBook" href="/openNewBook">Create New Book</a>
+		<a id="createNewBook" href="/createNewBook">Create New Book</a>
 		
 	<P>The time on the server is ${serverTime}.</P>
 	<p>Books:</p>
