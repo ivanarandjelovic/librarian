@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.aivan.librarian.controller.BookController;
-import org.aivan.librarian.dao.entity.BookValidator;
+import org.aivan.librarian.controller.BookValidator;
 import org.junit.*;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;

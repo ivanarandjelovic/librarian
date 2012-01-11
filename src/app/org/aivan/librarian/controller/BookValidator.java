@@ -1,5 +1,6 @@
-package org.aivan.librarian.dao.entity;
+package org.aivan.librarian.controller;
 
+import org.aivan.librarian.dao.entity.Book;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

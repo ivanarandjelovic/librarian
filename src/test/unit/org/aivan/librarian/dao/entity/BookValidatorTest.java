@@ -2,6 +2,7 @@ package org.aivan.librarian.dao.entity;
 
 import static org.junit.Assert.*;
 
+import org.aivan.librarian.controller.BookValidator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

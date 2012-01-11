@@ -1,7 +1,6 @@
 package org.aivan.librarian.controller;
 
 import org.aivan.librarian.dao.entity.Book;
-import org.aivan.librarian.dao.entity.BookValidator;
 import org.aivan.librarian.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
