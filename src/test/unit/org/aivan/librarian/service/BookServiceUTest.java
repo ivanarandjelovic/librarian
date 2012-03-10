@@ -58,5 +58,15 @@ public class BookServiceUTest {
 		assertEquals("Book title is not correct after update", testTitle, book.getTitle());
 
 	}
+	
+	 @Test
+	  public void testDeleteBook() {
+	    
+	    Long id = UnitTestData.testBooks[0].getId();
+	    bookService.deleteBook(id);
+	    Book book = bookService.getBook(id);
+	    assertNull("Book should have been deleted", book);
+
+	  }
 
 }

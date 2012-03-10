@@ -64,4 +64,17 @@ public class BookServiceCTest {
 		assertEquals("Update book Title is not correct", testTitle, book.getTitle());
 	}
 
+	 //@Test
+  @Transactional
+  public void testDeleteBook() {
+    String testTitle = "testTitle"+System.currentTimeMillis();
+    Book book = new Book();
+    book.setTitle(testTitle);
+    bookService.createBook(book);
+    assertNotNull("Book ID should not be null", book.getId());
+    bookService.deleteBook(book.getId());
+    book = bookService.getBook(KNOWN_BOOK_ID);
+    assertNull("Book should have been deleted", book);
+  }
+  
 }

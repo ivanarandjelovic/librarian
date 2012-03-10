@@ -64,4 +64,19 @@ public class BookDaoCTest extends AbstractTransactionalJUnit4SpringContextTests 
 		assertEquals("Update book Title is not correct", testTitle, book.getTitle());
 	}
 
+  @Test
+  @Transactional
+  public void testDeleteBook() {
+
+    Book newBook = new Book();
+    newBook.setTitle("book title deletion test 1");
+    bookDao.createBook(newBook);
+
+    bookDao.deleteBook(newBook.getId());
+
+    Book deletedBook = bookDao.getBook(newBook.getId());
+    assertNull("Book should have been deleted", deletedBook);
+    
+  }
+
 }
