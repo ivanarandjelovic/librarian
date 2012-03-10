@@ -41,4 +41,8 @@ public class BookService {
 		return book;
 	}
 
+  public void deleteBook(Long id) {
+    bookDao.deleteBook(id);
+  }
+
 }

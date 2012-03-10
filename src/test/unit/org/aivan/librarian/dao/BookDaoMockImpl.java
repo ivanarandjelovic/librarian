@@ -9,42 +9,46 @@ import org.aivan.librarian.dao.entity.Book;
 
 public class BookDaoMockImpl implements BookDao {
 
-	// Mock internal code
-	
-	public static long counter = 0;
+  // Mock internal code
 
-	Map<Long, Book> books = new HashMap<Long, Book>();
+  public static long counter = 0;
 
-	public Map<Long, Book> getBooks() {
-		return books;
-	}
+  Map<Long, Book> books = new HashMap<Long, Book>();
 
-	public void setBooks(Map<Long, Book> books) {
-		this.books = books;
-	}
+  public Map<Long, Book> getBooks() {
+    return books;
+  }
 
-	// Mock methods
+  public void setBooks(Map<Long, Book> books) {
+    this.books = books;
+  }
 
-	@Override
-	public void createBook(Book book) {
-		book.setId(new Long(++counter));
-		updateBook(book);
-	}
+  // Mock methods
 
-	@Override
-	public Book getBook(Long bookId) {
-		return books.get(bookId);
-	}
+  @Override
+  public void createBook(Book book) {
+    book.setId(new Long(++counter));
+    updateBook(book);
+  }
 
-	@Override
-	public List<Book> getAllBooks() {
-		return new ArrayList<Book>(books.values());
-	}
+  @Override
+  public Book getBook(Long bookId) {
+    return books.get(bookId);
+  }
 
-	@Override
-	public void updateBook(Book book) {
-		books.put(book.getId(), book);
-	}
+  @Override
+  public List<Book> getAllBooks() {
+    return new ArrayList<Book>(books.values());
+  }
 
-	
+  @Override
+  public void updateBook(Book book) {
+    books.put(book.getId(), book);
+  }
+
+  @Override
+  public void deleteBook(Long id) {
+    books.remove(id);
+  }
+
 }

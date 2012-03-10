@@ -13,31 +13,35 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookDaoHibernateImpl implements BookDao {
 
-	transient private HibernateTemplate hibernateTemplate;
+  transient private HibernateTemplate hibernateTemplate;
 
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-        this.hibernateTemplate = new HibernateTemplate(sessionFactory);
-    }
-	
-	public void createBook(Book book) {
-		hibernateTemplate.save(book);
-	}
-    
-	public Book getBook(Long Id) {
-		return hibernateTemplate.get(Book.class, Id);
-	}
+  @Autowired
+  public void setSessionFactory(SessionFactory sessionFactory) {
+    this.hibernateTemplate = new HibernateTemplate(sessionFactory);
+  }
 
-	@Override
-	public List<Book> getAllBooks() {
-		 return hibernateTemplate.loadAll(Book.class);
-	}
+  public void createBook(Book book) {
+    hibernateTemplate.save(book);
+  }
 
-	@Override
-	public void updateBook(Book book) {
-		 hibernateTemplate.update(book);
-	}
-	
-	
+  public Book getBook(Long Id) {
+    return hibernateTemplate.get(Book.class, Id);
+  }
+
+  @Override
+  public List<Book> getAllBooks() {
+    return hibernateTemplate.loadAll(Book.class);
+  }
+
+  @Override
+  public void updateBook(Book book) {
+    hibernateTemplate.update(book);
+  }
+
+  @Override
+  public void deleteBook(Long id) {
+    Book book = hibernateTemplate.get(Book.class, id);
+    hibernateTemplate.delete(book);
+  }
 
 }

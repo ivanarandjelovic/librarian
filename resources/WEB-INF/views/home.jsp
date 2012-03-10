@@ -20,6 +20,7 @@
 			<tr>
 				<td><a id="editBookLink_${book.id}" href="/editBook?id=${book.id}">${book.id}</a></td>
 				<td><a id="editBookLink_${book.id}" href="/editBook?id=${book.id}">${book.title}</a></td>
+				<td><a id="deleteBookLink_${book.id}" href="/deleteBook?id=${book.id}">delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

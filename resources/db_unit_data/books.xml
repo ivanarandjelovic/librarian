@@ -5,11 +5,11 @@
         <column>title</column>
         <row>
             <value>1</value>
-            <value>Book Title 1</value>
+            <value>Book Title 1 for editing</value>
         </row>
         <row>
             <value>2</value>
-            <value>Book Title 2</value>
+            <value>Book Title 2 for deletion</value>
         </row>
         <row>
             <value>3</value>
