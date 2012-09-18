@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.aivan.librarian.dao.BookDao;
 import org.aivan.librarian.dao.entity.Book;
-import org.aivan.librarian.testdata.UnitTestData;
 import org.junit.Before;
 import org.junit.Test;
 
